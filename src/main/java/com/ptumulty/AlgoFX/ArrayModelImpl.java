@@ -1,5 +1,7 @@
 package com.ptumulty.AlgoFX;
 
+import com.ptumulty.ceramic.utility.ArrayUtils;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -8,11 +10,6 @@ public class ArrayModelImpl<T> implements ArrayModel<T>
 {
     private final T[] model;
     private final List<Listener<T>> listeners;
-
-    ArrayModelImpl()
-    {
-        this(0);
-    }
 
     ArrayModelImpl(int size)
     {
@@ -38,9 +35,15 @@ public class ArrayModelImpl<T> implements ArrayModel<T>
     @Override
     public void swap(int i, int j)
     {
-        T temp = get(i);
-        model[i] = get(j);
-        model[j] = temp;
+        listeners.forEach(listener -> listener.aboutToSwap(i, model[i], j, model[j]));
+        ArrayUtils.swap(model, i, j);
+    }
+
+    @Override
+    public void roll(int n)
+    {
+        ArrayUtils.roll(model, n);
+        listeners.forEach(Listener::rolled);
     }
 
     @Override

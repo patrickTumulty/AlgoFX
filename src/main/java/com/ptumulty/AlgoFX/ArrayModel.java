@@ -10,6 +10,8 @@ public interface ArrayModel<T>
 
     void scramble();
 
+    void roll(int n);
+
     int size();
 
     void addListener(Listener<T> listener);
@@ -21,5 +23,9 @@ public interface ArrayModel<T>
         void valueSet(int i, T value);
 
         void currentElement(int i, T value);
+
+        void aboutToSwap(int i, T iValue, int j, T jValue);
+
+        void rolled();
     }
 }
