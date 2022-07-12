@@ -20,8 +20,6 @@ public class AlgoFXApplication extends Application
         arraySortView.getView().setPrefSize(1000, 500);
         Scene scene = new Scene(arraySortView.getView());
         primaryStage.setScene(scene);
-
         primaryStage.show();
-
     }
 }

@@ -1,17 +1,17 @@
 package com.ptumulty.AlgoFX;
 
-import com.ptumulty.ceramic.models.IntegerModel;
+import com.ptumulty.ceramic.models.BoundIntegerModel;
 
 import java.util.Optional;
 
 public class ArraySorter
 {
     private ArrayModel<Integer> arrayModel;
-    private final IntegerModel arraySizeModel;
+    private final BoundIntegerModel arraySizeModel;
 
     ArraySorter()
     {
-        arraySizeModel = new IntegerModel(10);
+        arraySizeModel = new BoundIntegerModel(10, Optional.of(2), Optional.of(100)); // TODO reevalute bounds
     }
 
     public void generateNewArray()
@@ -31,7 +31,7 @@ public class ArraySorter
         }
     }
 
-    public IntegerModel getArraySizeModel()
+    public BoundIntegerModel getArraySizeModel()
     {
         return arraySizeModel;
     }

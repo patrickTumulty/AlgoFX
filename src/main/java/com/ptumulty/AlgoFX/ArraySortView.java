@@ -1,6 +1,7 @@
 package com.ptumulty.AlgoFX;
 
-import com.ptumulty.ceramic.components.SpinnerComponent;
+import com.ptumulty.ceramic.components.BoundIntegerSpinnerComponent;
+import com.ptumulty.ceramic.components.IntegerSpinnerComponent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -26,7 +27,7 @@ public class ArraySortView
 
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER);
-        SpinnerComponent spinnerComponent = new SpinnerComponent(sorter.getArraySizeModel());
+        BoundIntegerSpinnerComponent spinnerComponent = new BoundIntegerSpinnerComponent(sorter.getArraySizeModel());
         hBox.getChildren().add(spinnerComponent.getRenderer());
         Button sortArray = new Button("Sort");
         sortArray.disableProperty().set(true);
