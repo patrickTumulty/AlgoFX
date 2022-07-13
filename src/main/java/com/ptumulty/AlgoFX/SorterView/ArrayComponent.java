@@ -1,5 +1,6 @@
-package com.ptumulty.AlgoFX;
+package com.ptumulty.AlgoFX.SorterView;
 
+import com.ptumulty.AlgoFX.Sorter.ArrayModel;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -9,7 +10,6 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
 {
@@ -57,14 +57,31 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
         return (int) (maxRectangleHeight * (value / (float) max));
     }
 
+    public void setArrayWidth(int arrayWidth)
+    {
+        if (this.arrayWidth != arrayWidth)
+        {
+            this.arrayWidth = arrayWidth;
+            for (SelectableRectangle rectangle : rectangleMap.values())
+            {
+                rectangle.setWidth(calculateRectangleWidth());
+            }
+        }
+    }
+
     private Rectangle createRectangle(int i, T value)
     {
-        int width = (arrayWidth / model.size()) - (((model.size() - 1) * rectangleSpacing) / model.size());
+        int width = calculateRectangleWidth();
         SelectableRectangle rectangle = new SelectableRectangle(width, calculateRelativeRectangleHeight(value.floatValue()));
         rectangle.setFillColor(Color.DARKCYAN);
         rectangle.setSelectedColor(Color.LIGHTBLUE);
         rectangleMap.put(i, rectangle);
         return rectangle;
+    }
+
+    private int calculateRectangleWidth()
+    {
+        return (arrayWidth / model.size()) - (((model.size() - 1) * rectangleSpacing) / model.size());
     }
 
     private void updateRectangle(int i, T value)
@@ -76,6 +93,7 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
             {
                 selectRectangle(rectangle);
                 rectangle.setHeight(calculateRelativeRectangleHeight(value.floatValue()));
+                rectangle.setWidth(calculateRectangleWidth());
             });
         }
     }
@@ -107,7 +125,10 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
     @Override
     public void currentElement(int i, T value)
     {
-        Optional.ofNullable(rectangleMap.get(i)).ifPresent(this::selectRectangle);
+        if (rectangleMap.containsKey(i))
+        {
+            FxUtils.run(() -> selectRectangle(rectangleMap.get(i)));
+        }
     }
 
     private void selectRectangle(SelectableRectangle rectangle)

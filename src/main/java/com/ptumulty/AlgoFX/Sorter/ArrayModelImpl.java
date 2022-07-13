@@ -1,4 +1,4 @@
-package com.ptumulty.AlgoFX;
+package com.ptumulty.AlgoFX.Sorter;
 
 import com.ptumulty.ceramic.utility.ArrayUtils;
 

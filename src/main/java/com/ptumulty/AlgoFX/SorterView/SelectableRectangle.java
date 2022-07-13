@@ -1,4 +1,4 @@
-package com.ptumulty.AlgoFX;
+package com.ptumulty.AlgoFX.SorterView;
 
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.beans.property.BooleanProperty;

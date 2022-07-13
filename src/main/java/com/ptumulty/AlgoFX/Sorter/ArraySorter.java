@@ -1,17 +1,21 @@
-package com.ptumulty.AlgoFX;
+package com.ptumulty.AlgoFX.Sorter;
 
 import com.ptumulty.ceramic.models.BoundIntegerModel;
+import com.ptumulty.ceramic.models.ChoiceModel;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ArraySorter
 {
+    private final ChoiceModel<SortingAlgorithm> algorithmChoiceModel;
     private ArrayModel<Integer> arrayModel;
     private final BoundIntegerModel arraySizeModel;
 
-    ArraySorter()
+    public ArraySorter()
     {
-        arraySizeModel = new BoundIntegerModel(10, Optional.of(2), Optional.of(100)); // TODO reevalute bounds
+        arraySizeModel = new BoundIntegerModel(10, Optional.of(2), Optional.of(100));
+        algorithmChoiceModel = new ChoiceModel<>(SortingAlgorithm.BUBBLE, List.of(SortingAlgorithm.values()));
     }
 
     public void generateNewArray()
@@ -36,8 +40,18 @@ public class ArraySorter
         return arraySizeModel;
     }
 
+    public ChoiceModel<SortingAlgorithm> getAlgorithmChoiceModel()
+    {
+        return algorithmChoiceModel;
+    }
+
     public Optional<ArrayModel<Integer>> getArrayModel()
     {
         return Optional.ofNullable(arrayModel);
+    }
+
+    public void sort()
+    {
+        TimeControlledSorter.sort(arrayModel, getAlgorithmChoiceModel().get(), 100);
     }
 }

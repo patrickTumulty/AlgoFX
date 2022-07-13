@@ -1,4 +1,4 @@
-package com.ptumulty.AlgoFX;
+package com.ptumulty.AlgoFX.Sorter;
 
 public interface ArrayModel<T>
 {

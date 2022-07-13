@@ -1,5 +1,7 @@
 package com.ptumulty.AlgoFX;
 
+import com.ptumulty.AlgoFX.Sorter.ArraySorter;
+import com.ptumulty.AlgoFX.SorterView.ArraySortView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
