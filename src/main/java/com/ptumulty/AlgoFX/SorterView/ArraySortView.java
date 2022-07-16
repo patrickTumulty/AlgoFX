@@ -1,8 +1,8 @@
 package com.ptumulty.AlgoFX.SorterView;
 
 import com.ptumulty.AlgoFX.Sorter.ArraySorter;
-import com.ptumulty.AlgoFX.Sorter.SortingAlgorithm;
 import com.ptumulty.ceramic.components.BoundIntegerSpinnerComponent;
+import com.ptumulty.ceramic.components.BoundSliderComponent;
 import com.ptumulty.ceramic.components.ChoiceComponent;
 import com.ptumulty.ceramic.utility.ThreadUtils;
 import javafx.geometry.Pos;
@@ -30,9 +30,19 @@ public class ArraySortView
         hBox.setAlignment(Pos.CENTER);
         borderPane.setBottom(hBox);
 
-        ChoiceComponent<SortingAlgorithm> sortingAlgorithmChoiceComponent = new ChoiceComponent<>(sorter.getAlgorithmChoiceModel());
-        borderPane.setTop(sortingAlgorithmChoiceComponent.getRenderer());
-        BorderPane.setAlignment(sortingAlgorithmChoiceComponent.getRenderer(), Pos.CENTER);
+        if (sorter.getSortingAlgorithmChoiceModel().isPresent())
+        {
+            ChoiceComponent<String> sortingAlgorithmChoiceComponent = new ChoiceComponent<>(sorter.getSortingAlgorithmChoiceModel().get());
+            borderPane.setTop(sortingAlgorithmChoiceComponent.getRenderer());
+            BorderPane.setAlignment(sortingAlgorithmChoiceComponent.getRenderer(), Pos.CENTER);
+        }
+
+        BoundSliderComponent timeDelaySliderComponent = new BoundSliderComponent(sorter.getCurrentTimeControlledSorter().getTimeStepIntegerModel());
+        timeDelaySliderComponent.getRenderer().setPrefWidth(250);
+        timeDelaySliderComponent.setSpacing(10);
+
+        timeDelaySliderComponent.getLabelComponent().setSuffix("ms");
+        hBox.getChildren().add(timeDelaySliderComponent.getRenderer());
 
         configureArraySizeSpinner(sorter);
 
