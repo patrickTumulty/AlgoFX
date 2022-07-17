@@ -1,0 +1,89 @@
+
+* {
+    -font-color: white;
+
+}
+
+.root {
+    -fx-font-size: 12pt;
+    -fx-font-family: "Arial";
+    -fx-text-fill: -font-color;
+}
+
+.label {
+    -fx-text-fill: -font-color;
+}
+
+.button {
+    -fx-min-width: 100;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+    -fx-text-fill: -font-color;
+    -fx-border-width: 1.5px;
+    -fx-border-color: white;
+    -fx-border-radius: 5;
+}
+
+ .choice-box {
+    -fx-background-color: transparent;
+    -fx-border-width: 1.5px;
+    -fx-border-color: white;
+    -fx-border-radius: 5;
+ }
+
+ .choice-box .arrow {
+    -fx-background-color: white;
+ }
+
+// Spinner
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button  {
+    -fx-border-width: 1.5px;
+    -fx-border-color: white;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover  {
+    -fx-opacity: 0.5;
+}
+
+.spinner .increment-arrow-button:hover  {
+    -fx-background-radius: 0 5 0 0;
+}
+
+.spinner .decrement-arrow-button:hover  {
+    -fx-background-radius: 0 0 5 0;
+}
+
+.spinner .increment-arrow-button {
+    -fx-border-radius: 0 5 0 0;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-border-radius: 0 0 5 0;
+}
+
+.spinner {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+}
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 1.5px;
+    -fx-border-color: white;
+    -fx-border-radius: 5 0 0 5;
+    -fx-text-fill: -font-color;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: white;
+}
+
+

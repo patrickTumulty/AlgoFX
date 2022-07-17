@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 import java.util.HashMap;
@@ -73,10 +74,26 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
     {
         int width = calculateRectangleWidth();
         SelectableRectangle rectangle = new SelectableRectangle(width, calculateRelativeRectangleHeight(value.floatValue()));
-        rectangle.setFillColor(Color.DARKCYAN);
-        rectangle.setSelectedColor(Color.LIGHTBLUE);
+        rectangle.setFillColor(Color.GREY);
+        rectangle.setSelectedColor(Color.DARKGRAY);
         rectangleMap.put(i, rectangle);
         return rectangle;
+    }
+
+    public void setRectangleColor(Paint color)
+    {
+        for (SelectableRectangle rectangle : rectangleMap.values())
+        {
+            rectangle.setFillColor(color);
+        }
+    }
+
+    public void setSelectedRectangleColor(Paint color)
+    {
+        for (SelectableRectangle rectangle : rectangleMap.values())
+        {
+            rectangle.setSelectedColor(color);
+        }
     }
 
     private int calculateRectangleWidth()

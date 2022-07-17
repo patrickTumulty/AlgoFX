@@ -5,11 +5,14 @@ import com.ptumulty.ceramic.components.BoundIntegerSpinnerComponent;
 import com.ptumulty.ceramic.components.BoundSliderComponent;
 import com.ptumulty.ceramic.components.ChoiceComponent;
 import com.ptumulty.ceramic.utility.ThreadUtils;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 
 public class ArraySortView
 {
@@ -25,30 +28,50 @@ public class ArraySortView
         this.sorter = sorter;
 
         borderPane = new BorderPane();
+        setBackground();
 
         hBox = new HBox();
         hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(10);
         borderPane.setBottom(hBox);
+        BorderPane.setAlignment(hBox, Pos.CENTER);
+        BorderPane.setMargin(hBox, new Insets(20, 0, 20, 0));
 
-        if (sorter.getSortingAlgorithmChoiceModel().isPresent())
-        {
-            ChoiceComponent<String> sortingAlgorithmChoiceComponent = new ChoiceComponent<>(sorter.getSortingAlgorithmChoiceModel().get());
-            borderPane.setTop(sortingAlgorithmChoiceComponent.getRenderer());
-            BorderPane.setAlignment(sortingAlgorithmChoiceComponent.getRenderer(), Pos.CENTER);
-        }
+        configureSortingAlgorithmChoiceComponent();
 
-        BoundSliderComponent timeDelaySliderComponent = new BoundSliderComponent(sorter.getCurrentTimeControlledSorter().getTimeStepIntegerModel());
-        timeDelaySliderComponent.getRenderer().setPrefWidth(250);
-        timeDelaySliderComponent.setSpacing(10);
-
-        timeDelaySliderComponent.getLabelComponent().setSuffix("ms");
-        hBox.getChildren().add(timeDelaySliderComponent.getRenderer());
+        configureTimeDelaySlider(sorter);
 
         configureArraySizeSpinner(sorter);
 
         configureSortArrayButton();
 
         configureGenerateArrayButton();
+    }
+
+    private void configureTimeDelaySlider(ArraySorter sorter)
+    {
+        BoundSliderComponent timeDelaySliderComponent = new BoundSliderComponent(sorter.getCurrentTimeControlledSorter().getTimeStepIntegerModel());
+        timeDelaySliderComponent.getRenderer().setPrefWidth(220);
+        timeDelaySliderComponent.setSpacing(10);
+        timeDelaySliderComponent.getLabelComponent().setSuffix("ms");
+        hBox.getChildren().add(timeDelaySliderComponent.getRenderer());
+    }
+
+    private void configureSortingAlgorithmChoiceComponent()
+    {
+        ChoiceComponent<String> sortingAlgorithmChoiceComponent = new ChoiceComponent<>(sorter.getSortingAlgorithmChoiceModel());
+        sortingAlgorithmChoiceComponent.getRenderer().setPrefWidth(200);
+        borderPane.setTop(sortingAlgorithmChoiceComponent.getRenderer());
+        BorderPane.setAlignment(sortingAlgorithmChoiceComponent.getRenderer(), Pos.CENTER);
+        BorderPane.setMargin(sortingAlgorithmChoiceComponent.getRenderer(), new Insets(20, 0, 20, 0));
+    }
+
+    private void setBackground()
+    {
+        Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.DARKMAGENTA)};
+        LinearGradient gradient = new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, stops);
+        BackgroundFill backgroundFill = new BackgroundFill(gradient, null, null);
+        borderPane.setBackground(new Background(backgroundFill));
     }
 
     private void configureArraySizeSpinner(ArraySorter sorter)
@@ -79,6 +102,8 @@ public class ArraySortView
                     sorter.getArrayModel().get().removeListener(arrayComponent);
                 }
                 arrayComponent = new ArrayComponent<>(sorter.getArrayModel().get());
+                arrayComponent.setRectangleColor(Color.WHITE);
+                arrayComponent.setSelectedRectangleColor(Color.LIGHTGREEN);
                 arrayComponent.setArrayWidth(600);
                 borderPane.setCenter(arrayComponent.getRenderer());
                 BorderPane.setAlignment(arrayComponent.getRenderer(), Pos.CENTER);
