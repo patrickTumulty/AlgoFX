@@ -1,4 +1,4 @@
-package com.ptumulty.AlgoFX.Sorter;
+package com.ptumulty.AlgoFX.Sorter.ArrayModel;
 
 import com.ptumulty.ceramic.utility.ArrayUtils;
 
@@ -11,7 +11,7 @@ public class ArrayModelImpl<T> implements ArrayModel<T>
     private final T[] model;
     private final List<Listener<T>> listeners;
 
-    ArrayModelImpl(int size)
+    public ArrayModelImpl(int size)
     {
         model = (T[]) new Object[size];
         listeners = new LinkedList<>();

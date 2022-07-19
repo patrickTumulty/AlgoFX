@@ -1,6 +1,6 @@
 package com.ptumulty.AlgoFX.SorterView;
 
-import com.ptumulty.AlgoFX.Sorter.ArrayModel;
+import com.ptumulty.AlgoFX.Sorter.ArrayModel.ArrayModel;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -74,6 +74,8 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
     {
         int width = calculateRectangleWidth();
         SelectableRectangle rectangle = new SelectableRectangle(width, calculateRelativeRectangleHeight(value.floatValue()));
+        rectangle.setArcHeight(10);
+        rectangle.setArcWidth(10);
         rectangle.setFillColor(Color.GREY);
         rectangle.setSelectedColor(Color.DARKGRAY);
         rectangleMap.put(i, rectangle);
