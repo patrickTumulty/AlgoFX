@@ -1,6 +1,6 @@
-package com.ptumulty.AlgoFX.Sorter.TimeControlledSorters;
+package com.ptumulty.AlgoFX.Sorting.Sorter.TimeControlledSorters;
 
-import com.ptumulty.AlgoFX.Sorter.ArrayModel.ArrayModel;
+import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
 import com.ptumulty.ceramic.models.BoundIntegerModel;
 import org.openide.util.Lookup;
 

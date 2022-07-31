@@ -1,9 +1,9 @@
-package com.ptumulty.AlgoFX.Sorter;
+package com.ptumulty.AlgoFX.Sorting.Sorter;
 
 import com.ptumulty.AlgoFX.ArrayGenerationMethod;
-import com.ptumulty.AlgoFX.Sorter.ArrayModel.ArrayModel;
-import com.ptumulty.AlgoFX.Sorter.ArrayModel.ArrayModelImpl;
-import com.ptumulty.AlgoFX.Sorter.TimeControlledSorters.TimeControlledSorter;
+import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
+import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModelImpl;
+import com.ptumulty.AlgoFX.Sorting.Sorter.TimeControlledSorters.TimeControlledSorter;
 import com.ptumulty.ceramic.models.BoundIntegerModel;
 import com.ptumulty.ceramic.models.ChoiceModel;
 import org.openide.util.Lookup;

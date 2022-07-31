@@ -1,4 +1,4 @@
-package com.ptumulty.AlgoFX.Sorter.TimeControlledSorters;
+package com.ptumulty.AlgoFX.Sorting.Sorter.TimeControlledSorters;
 
 import com.ptumulty.ceramic.models.BoundIntegerModel;
 

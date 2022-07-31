@@ -1,7 +1,6 @@
 package com.ptumulty.AlgoFX;
 
-import com.ptumulty.AlgoFX.Sorter.ArraySorterController;
-import com.ptumulty.AlgoFX.SorterView.ArraySortView;
+import com.ptumulty.AlgoFX.AlgoView.AlgoViewLauncherView;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -18,11 +17,11 @@ public class AlgoFXApplication extends Application
     @Override
     public void start(Stage primaryStage)
     {
-        ArraySorterController arraySorter = new ArraySorterController();
-        ArraySortView arraySortView = new ArraySortView(arraySorter);
-        FxUtils.setStaticPaneSize(arraySortView.getView(), 1000, 600);
-        Scene scene = new Scene(arraySortView.getView());
-        scene.getStylesheets().add("css/sleek.css");
+        AlgoViewLauncherView launcherView = new AlgoViewLauncherView(3);
+
+        FxUtils.setStaticRegionSize(launcherView.getView(), 1000, 600);
+        Scene scene = new Scene(launcherView.getView());
+//        scene.getStylesheets().add("css/sleek.css");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();

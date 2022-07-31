@@ -1,6 +1,6 @@
-package com.ptumulty.AlgoFX.SorterView;
+package com.ptumulty.AlgoFX.Sorting.SorterView;
 
-import com.ptumulty.AlgoFX.Sorter.ArrayModel.ArrayModel;
+import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

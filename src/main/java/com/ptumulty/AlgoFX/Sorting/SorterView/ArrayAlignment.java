@@ -1,4 +1,4 @@
-package com.ptumulty.AlgoFX.SorterView;
+package com.ptumulty.AlgoFX.Sorting.SorterView;
 
 import javafx.geometry.Pos;
 

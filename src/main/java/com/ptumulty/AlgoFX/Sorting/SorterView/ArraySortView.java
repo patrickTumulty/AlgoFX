@@ -1,8 +1,8 @@
-package com.ptumulty.AlgoFX.SorterView;
+package com.ptumulty.AlgoFX.Sorting.SorterView;
 
 import com.ptumulty.AlgoFX.ArrayGenerationMethod;
-import com.ptumulty.AlgoFX.Sorter.ArrayModel.ArrayModel;
-import com.ptumulty.AlgoFX.Sorter.ArraySorterController;
+import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
+import com.ptumulty.AlgoFX.Sorting.Sorter.ArraySorterController;
 import com.ptumulty.ceramic.components.BoundIntegerSpinnerComponent;
 import com.ptumulty.ceramic.components.BoundSliderComponent;
 import com.ptumulty.ceramic.components.ChoiceComponent;
