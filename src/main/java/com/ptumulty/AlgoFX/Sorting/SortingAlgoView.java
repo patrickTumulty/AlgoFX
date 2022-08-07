@@ -39,9 +39,21 @@ public class SortingAlgoView implements AlgoView
     }
 
     @Override
-    public Node getControls()
+    public String getAlgoActionName()
     {
         return null;
+    }
+
+    @Override
+    public void doAlgoAction()
+    {
+
+    }
+
+    @Override
+    public void doAlgoReset()
+    {
+
     }
 
     @Override

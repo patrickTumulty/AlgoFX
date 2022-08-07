@@ -15,7 +15,11 @@ public interface AlgoView
 
     Node getVisualization();
 
-    Node getControls();
+    String getAlgoActionName();
+
+    void doAlgoAction();
+
+    void doAlgoReset();
 
     List<ComponentSettingGroup> getSettings();
 }

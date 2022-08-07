@@ -66,11 +66,21 @@ public class TestAlgoView implements AlgoView
     }
 
     @Override
-    public Node getControls()
+    public String getAlgoActionName()
     {
-        HBox hBox = new HBox(new Button("Action 1"), new Button("Action 2"), new Button("Action 3"));
-        hBox.setAlignment(Pos.CENTER);
-        return hBox;
+        return "Test";
+    }
+
+    @Override
+    public void doAlgoAction()
+    {
+        System.out.println("Bang!");
+    }
+
+    @Override
+    public void doAlgoReset()
+    {
+        System.out.println("Reset!");
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -124,26 +123,47 @@ public class AlgoViewLauncherView
             algoViewLayout = new BorderPane();
             Label algoViewLabel = new Label(algoView.getTitle());
             BorderPane.setAlignment(algoViewLabel, Pos.CENTER);
-            BorderPane.setMargin(algoViewLabel, new Insets(10));
+            BorderPane.setMargin(algoViewLabel, new Insets(50, 10, 10, 10));
             algoViewLayout.setTop(algoViewLabel);
 
             algoViewLayout.setCenter(algoView.getVisualization());
-
             BorderPane.setAlignment(algoView.getVisualization(), Pos.CENTER);
-            Button settingsButton = new Button("Settings");
-            settingsButton.setOnAction(event -> showSettings());
 
-            VBox vBox = new VBox(algoView.getControls(), settingsButton);
-            vBox.setSpacing(10);
-            vBox.setAlignment(Pos.CENTER);
-            algoViewLayout.setBottom(vBox);
-            BorderPane.setMargin(vBox, new Insets(10));
-            BorderPane.setAlignment(vBox, Pos.CENTER);
+            VBox algoActionControlPanel = configureActionControlPane();
+
+            algoViewLayout.setBottom(algoActionControlPanel);
+            BorderPane.setMargin(algoActionControlPanel, new Insets(10, 10, 50, 10));
+            BorderPane.setAlignment(algoActionControlPanel, Pos.CENTER);
 
             mainStackPane.getChildren().add(0, algoViewLayout);
 
             addBackButton();
         });
+    }
+
+    private VBox configureActionControlPane()
+    {
+        Button algoActionButton = new Button(currentAlgoView.getAlgoActionName());
+        algoActionButton.setOnAction(event -> currentAlgoView.doAlgoAction());
+
+        Button settingsButton = new Button();
+        settingsButton.setGraphic(new FontIcon(FontAwesomeSolid.COG));
+        Circle circle = new Circle();
+        circle.radiusProperty().bind(settingsButton.heightProperty());
+        settingsButton.setShape(circle);
+        settingsButton.setOnAction(event -> showSettings());
+
+        Button algoResetButton = new Button("Reset");
+        algoResetButton.setOnAction(event -> currentAlgoView.doAlgoReset());
+
+        HBox subActionHBox = new HBox(algoResetButton, settingsButton);
+        subActionHBox.setSpacing(10);
+        subActionHBox.setAlignment(Pos.CENTER);
+
+        VBox algoActionControlPanel = new VBox(algoActionButton, subActionHBox);
+        algoActionControlPanel.setSpacing(10);
+        algoActionControlPanel.setAlignment(Pos.CENTER);
+        return algoActionControlPanel;
     }
 
     private void hideSettings()
