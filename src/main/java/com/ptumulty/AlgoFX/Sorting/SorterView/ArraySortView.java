@@ -37,7 +37,7 @@ public class ArraySortView
         this.sortController = sortController;
 
         borderPane = new BorderPane();
-        setBackground();
+//        setBackground();
 
         vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);

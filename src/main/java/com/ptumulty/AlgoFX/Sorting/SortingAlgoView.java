@@ -3,7 +3,10 @@ package com.ptumulty.AlgoFX.Sorting;
 import com.ptumulty.AlgoFX.AlgoView.AlgoView;
 import com.ptumulty.AlgoFX.Sorting.Sorter.ArraySorterController;
 import com.ptumulty.AlgoFX.Sorting.SorterView.ArraySortView;
+import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import javafx.scene.Node;
+
+import java.util.List;
 
 public class SortingAlgoView implements AlgoView
 {
@@ -37,6 +40,12 @@ public class SortingAlgoView implements AlgoView
 
     @Override
     public Node getControls()
+    {
+        return null;
+    }
+
+    @Override
+    public List<ComponentSettingGroup> getSettings()
     {
         return null;
     }

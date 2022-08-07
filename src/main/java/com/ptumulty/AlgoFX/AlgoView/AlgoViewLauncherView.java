@@ -1,14 +1,19 @@
 package com.ptumulty.AlgoFX.AlgoView;
 
+import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
+import org.kordamp.ikonli.carbonicons.CarbonIcons;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.openide.util.Lookup;
@@ -24,6 +29,9 @@ public class AlgoViewLauncherView
     private AlgoView currentAlgoView;
     private final int columns;
     private Button backButton;
+    private BorderPane algoViewLayout;
+    private Rectangle settingsSeparator;
+    private BorderPane settingPopOverBorderPane;
 
     public AlgoViewLauncherView(int cols)
     {
@@ -67,7 +75,7 @@ public class AlgoViewLauncherView
     {
         if (currentAlgoView != null)
         {
-            mainStackPane.getChildren().remove(currentAlgoView.getVisualization());
+            mainStackPane.getChildren().remove(0);
         }
         mainStackPane.getChildren().add(0, gridPane);
         StackPane.setAlignment(gridPane, Pos.CENTER);
@@ -112,10 +120,96 @@ public class AlgoViewLauncherView
         FxUtils.run(() ->
         {
             mainStackPane.getChildren().remove(gridPane);
-            mainStackPane.getChildren().add(0, algoView.getVisualization());
+
+            algoViewLayout = new BorderPane();
+            Label algoViewLabel = new Label(algoView.getTitle());
+            BorderPane.setAlignment(algoViewLabel, Pos.CENTER);
+            BorderPane.setMargin(algoViewLabel, new Insets(10));
+            algoViewLayout.setTop(algoViewLabel);
+
+            algoViewLayout.setCenter(algoView.getVisualization());
+
+            BorderPane.setAlignment(algoView.getVisualization(), Pos.CENTER);
+            Button settingsButton = new Button("Settings");
+            settingsButton.setOnAction(event -> showSettings());
+
+            VBox vBox = new VBox(algoView.getControls(), settingsButton);
+            vBox.setSpacing(10);
+            vBox.setAlignment(Pos.CENTER);
+            algoViewLayout.setBottom(vBox);
+            BorderPane.setMargin(vBox, new Insets(10));
+            BorderPane.setAlignment(vBox, Pos.CENTER);
+
+            mainStackPane.getChildren().add(0, algoViewLayout);
 
             addBackButton();
         });
+    }
+
+    private void hideSettings()
+    {
+        mainStackPane.getChildren().remove(settingsSeparator);
+        mainStackPane.getChildren().remove(settingPopOverBorderPane);
+    }
+
+    private void showSettings()
+    {
+        configureSeparator();
+
+        configureSettingPopoverPane();
+
+        mainStackPane.getChildren().add(2, settingsSeparator);
+        mainStackPane.getChildren().add(3, settingPopOverBorderPane);
+    }
+
+    private void configureSettingPopoverPane()
+    {
+        settingPopOverBorderPane = new BorderPane();
+
+        StackPane headerPane = new StackPane();
+        Label title = new Label("Settings");
+        title.setAlignment(Pos.CENTER);
+        title.setTextAlignment(TextAlignment.CENTER);
+
+        headerPane.getChildren().add(0, title);
+        StackPane.setAlignment(title, Pos.CENTER);
+        StackPane.setMargin(title, new Insets(20));
+
+        FontIcon xGraphic = new FontIcon(CarbonIcons.CLOSE);
+        Button closeButton = new Button();
+        closeButton.setGraphic(xGraphic);
+        closeButton.setOnAction(closeEvent -> hideSettings());
+        headerPane.getChildren().add(1, closeButton);
+        StackPane.setAlignment(closeButton, Pos.CENTER_RIGHT);
+        StackPane.setMargin(closeButton, new Insets(20));
+        settingPopOverBorderPane.setTop(headerPane);
+
+        double sceneHeight = mainStackPane.getScene().getHeight();
+        FxUtils.setStaticRegionSize(settingPopOverBorderPane, 350, (int) sceneHeight - 50);
+        settingPopOverBorderPane.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(20), null))); // TODO change to css
+
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        for (ComponentSettingGroup settingGroup : currentAlgoView.getSettings())
+        {
+            settingGroup.getRenderer().minWidthProperty().bind(vBox.widthProperty());
+            vBox.getChildren().add(settingGroup.getRenderer());
+        }
+
+        ScrollPane scrollPane = new ScrollPane(vBox);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        vBox.minWidthProperty().bind(scrollPane.widthProperty());
+
+        settingPopOverBorderPane.setCenter(scrollPane);
+        BorderPane.setMargin(scrollPane, new Insets(0, 10, 10, 10));
+    }
+
+    private void configureSeparator()
+    {
+        settingsSeparator = new Rectangle(mainStackPane.getScene().getWidth(), mainStackPane.getScene().getHeight());
+        settingsSeparator.setOnMouseClicked(event -> hideSettings());
+        settingsSeparator.setFill(Color.WHITE);
+        settingsSeparator.setOpacity(0.4f);
     }
 
     private void setCurrentAlgoView(AlgoView algoView)
