@@ -1,5 +1,6 @@
 package com.ptumulty.AlgoFX.AlgoView;
 
+import com.ptumulty.ceramic.components.ChoiceComponent;
 import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import com.ptumulty.ceramic.utility.FxUtils;
 import com.ptumulty.ceramic.utility.ThreadUtils;
@@ -123,10 +124,18 @@ public class AlgoViewLauncherView
             mainStackPane.getChildren().remove(gridPane);
 
             algoViewLayout = new BorderPane();
+            VBox vBox = new VBox();
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setSpacing(10);
+            algoViewLayout.setTop(vBox);
+            BorderPane.setAlignment(vBox, Pos.CENTER);
+            BorderPane.setMargin(vBox, new Insets(50, 10, 10, 10));
+
             Label algoViewLabel = new Label(algoView.getTitle());
-            BorderPane.setAlignment(algoViewLabel, Pos.CENTER);
-            BorderPane.setMargin(algoViewLabel, new Insets(50, 10, 10, 10));
-            algoViewLayout.setTop(algoViewLabel);
+            vBox.getChildren().add(algoViewLabel);
+
+            ChoiceComponent<String> modes = new ChoiceComponent<>(algoView.getAlgoModes());
+            vBox.getChildren().add(modes.getRenderer());
 
             algoViewLayout.setCenter(algoView.getVisualizationPane());
             BorderPane.setAlignment(algoView.getVisualizationPane(), Pos.CENTER);

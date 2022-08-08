@@ -131,6 +131,12 @@ public class SortingAlgoView implements AlgoView
     }
 
     @Override
+    public ChoiceModel<String> getAlgoModes()
+    {
+        return arraySorter.getSortingAlgorithmChoiceModel();
+    }
+
+    @Override
     public void doAlgoAction()
     {
         arraySorter.sort();
