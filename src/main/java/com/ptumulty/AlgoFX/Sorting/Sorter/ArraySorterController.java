@@ -22,7 +22,7 @@ public class ArraySorterController
 
     public ArraySorterController()
     {
-        arraySizeModel = new BoundIntegerModel(20, Optional.of(2), Optional.of(100));
+        arraySizeModel = new BoundIntegerModel(30, Optional.of(2), Optional.of(100));
 
         createArrayGenerationChoiceModel();
 

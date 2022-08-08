@@ -10,7 +10,7 @@ public abstract class AbstractTimeControlledSorter implements TimeControlledSort
 
     AbstractTimeControlledSorter()
     {
-        timeStepIntegerModel = new BoundIntegerModel(10, Optional.of(0), Optional.of(1000));
+        timeStepIntegerModel = new BoundIntegerModel(15, Optional.of(0), Optional.of(1000));
     }
 
     @Override
