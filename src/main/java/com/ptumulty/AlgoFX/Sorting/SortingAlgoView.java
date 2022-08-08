@@ -115,7 +115,7 @@ public class SortingAlgoView implements AlgoView
     @Override
     public void dispose()
     {
-
+        arrayComponent = null;
     }
 
     @Override
