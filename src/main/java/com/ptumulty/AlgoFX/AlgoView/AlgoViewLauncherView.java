@@ -2,11 +2,13 @@ package com.ptumulty.AlgoFX.AlgoView;
 
 import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import com.ptumulty.ceramic.utility.FxUtils;
+import com.ptumulty.ceramic.utility.ThreadUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -126,8 +128,8 @@ public class AlgoViewLauncherView
             BorderPane.setMargin(algoViewLabel, new Insets(50, 10, 10, 10));
             algoViewLayout.setTop(algoViewLabel);
 
-            algoViewLayout.setCenter(algoView.getVisualization());
-            BorderPane.setAlignment(algoView.getVisualization(), Pos.CENTER);
+            algoViewLayout.setCenter(algoView.getVisualizationPane());
+            BorderPane.setAlignment(algoView.getVisualizationPane(), Pos.CENTER);
 
             VBox algoActionControlPanel = configureActionControlPane();
 
@@ -144,7 +146,7 @@ public class AlgoViewLauncherView
     private VBox configureActionControlPane()
     {
         Button algoActionButton = new Button(currentAlgoView.getAlgoActionName());
-        algoActionButton.setOnAction(event -> currentAlgoView.doAlgoAction());
+        algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
 
         Button settingsButton = new Button();
         settingsButton.setGraphic(new FontIcon(FontAwesomeSolid.COG));
@@ -154,7 +156,7 @@ public class AlgoViewLauncherView
         settingsButton.setOnAction(event -> showSettings());
 
         Button algoResetButton = new Button("Reset");
-        algoResetButton.setOnAction(event -> currentAlgoView.doAlgoReset());
+        algoResetButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoReset()));
 
         HBox subActionHBox = new HBox(algoResetButton, settingsButton);
         subActionHBox.setSpacing(10);
@@ -217,6 +219,13 @@ public class AlgoViewLauncherView
         }
 
         ScrollPane scrollPane = new ScrollPane(vBox);
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event ->
+        {
+            if (event.getDeltaX() != 0)
+            {
+                event.consume();
+            }
+        });
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         vBox.minWidthProperty().bind(scrollPane.widthProperty());
 

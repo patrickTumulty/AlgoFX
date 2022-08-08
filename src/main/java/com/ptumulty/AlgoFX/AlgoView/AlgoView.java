@@ -1,7 +1,7 @@
 package com.ptumulty.AlgoFX.AlgoView;
 
 import com.ptumulty.ceramic.components.ComponentSettingGroup;
-import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface AlgoView
 
     void dispose();
 
-    Node getVisualization();
+    Pane getVisualizationPane();
 
     String getAlgoActionName();
 

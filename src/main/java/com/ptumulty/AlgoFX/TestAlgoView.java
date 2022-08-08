@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -60,9 +61,9 @@ public class TestAlgoView implements AlgoView
     }
 
     @Override
-    public Node getVisualization()
+    public Pane getVisualizationPane()
     {
-        return new Rectangle(100, 200);
+        return new Pane(new Rectangle(100, 200));
     }
 
     @Override

@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
 {
@@ -25,7 +26,7 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
     private int arrayWidth = 300;
     private int rectangleSpacing = 5;
 
-    ArrayComponent(ArrayModel<T> arrayModel)
+    public ArrayComponent(ArrayModel<T> arrayModel)
     {
         model = arrayModel;
         rectangleMap = new HashMap<>();
@@ -39,6 +40,7 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
         renderer = new HBox();
         renderer.setSpacing(rectangleSpacing);
         renderer.setAlignment(Pos.CENTER);
+        renderer.widthProperty().addListener((observable, oldValue, newValue) -> setArrayWidth(newValue.intValue() - 10));
 
         for (int i = 0; i < model.size(); i++)
         {
@@ -63,10 +65,8 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
         if (this.arrayWidth != arrayWidth)
         {
             this.arrayWidth = arrayWidth;
-            for (SelectableRectangle rectangle : rectangleMap.values())
-            {
-                rectangle.setWidth(calculateRectangleWidth());
-            }
+            int rectangleWidth = calculateRectangleWidth();
+            rectangleMap.values().forEach(selectableRectangle -> selectableRectangle.setWidth(rectangleWidth));
         }
     }
 

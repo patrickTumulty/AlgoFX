@@ -1,18 +1,30 @@
 package com.ptumulty.AlgoFX.Sorting;
 
 import com.ptumulty.AlgoFX.AlgoView.AlgoView;
+import com.ptumulty.AlgoFX.ArrayGenerationMethod;
 import com.ptumulty.AlgoFX.Sorting.Sorter.ArraySorterController;
-import com.ptumulty.AlgoFX.Sorting.SorterView.ArraySortView;
-import com.ptumulty.ceramic.components.ComponentSettingGroup;
-import javafx.scene.Node;
+import com.ptumulty.AlgoFX.Sorting.SorterView.ArrayAlignment;
+import com.ptumulty.AlgoFX.Sorting.SorterView.ArrayComponent;
+import com.ptumulty.ceramic.components.*;
+import com.ptumulty.ceramic.models.ChoiceModel;
+import com.ptumulty.ceramic.utility.FxUtils;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SortingAlgoView implements AlgoView
 {
-
-    private ArraySortView arraySortView;
-
+    private ArraySorterController arraySorter;
+    private List<ComponentSettingGroup> sortingSettings;
+    private ArrayComponent<Integer> arrayComponent;
+    private ChoiceModel<ArrayAlignment> alignmentChoiceModel;
+    private StackPane visualizationPane;
+    
     @Override
     public String getTitle()
     {
@@ -22,8 +34,82 @@ public class SortingAlgoView implements AlgoView
     @Override
     public void initView()
     {
-        ArraySorterController arraySorter = new ArraySorterController();
-        arraySortView = new ArraySortView(arraySorter);
+        arraySorter = new ArraySorterController();
+        sortingSettings = new ArrayList<>();
+        visualizationPane = new StackPane();
+
+        configureSortingSettings();
+
+        generateNewArray();
+    }
+
+    private void generateNewArray()
+    {
+        arraySorter.generateNewArray();
+        arraySorter.scrambleArray();
+        if (arraySorter.getArrayModel().isPresent())
+        {
+            if (arrayComponent != null)
+            {
+                arraySorter.getArrayModel().get().removeListener(arrayComponent);
+                visualizationPane.getChildren().remove(0);
+            }
+            arrayComponent = new ArrayComponent<>(arraySorter.getArrayModel().get());
+            arrayComponent.setElementAlignment(alignmentChoiceModel.get().getAlignment());
+            arrayComponent.setRectangleColor(Color.GREY);
+            arrayComponent.setSelectedRectangleColor(Color.LIGHTGREEN);
+            visualizationPane.getChildren().add(0, arrayComponent.getRenderer());
+            StackPane.setAlignment(arrayComponent.getRenderer(), Pos.CENTER);
+            StackPane.setMargin(arrayComponent.getRenderer(), new Insets(0, 40, 0, 40));
+        }
+    }
+
+    private void configureSortingSettings()
+    {
+        configureSortingSetting();
+
+        configureArrayGenerationSettings();
+    }
+
+    private void configureArrayGenerationSettings()
+    {
+        BoundIntegerSpinnerComponent arraySizeSpinner = new BoundIntegerSpinnerComponent(arraySorter.getArraySizeModel());
+        arraySizeSpinner.setLabel("Array Size");
+
+        ChoiceComponent<ArrayGenerationMethod> arrayGenerationChoiceComponent = new ChoiceComponent<>(arraySorter.getArrayGenerationChoiceModel());
+        arrayGenerationChoiceComponent.setLabel("Generation Type");
+
+        ButtonComponent generateButtonComponent = new ButtonComponent("Generate", event -> FxUtils.run(this::generateNewArray));
+
+        sortingSettings.add(new ComponentSettingGroup("Array Generation", List.of(arraySizeSpinner, arrayGenerationChoiceComponent, generateButtonComponent)));
+    }
+
+    private void configureSortingSetting()
+    {
+        BoundSliderComponent timeDelaySliderComponent = new BoundSliderComponent(arraySorter.getCurrentTimeControlledSorter().getTimeStepIntegerModel());
+        arraySorter.getSortingAlgorithmChoiceModel().addListener(currentValue ->
+                timeDelaySliderComponent.attachModel(arraySorter.getCurrentTimeControlledSorter().getTimeStepIntegerModel()));
+        timeDelaySliderComponent.setLabel("Delay");
+        timeDelaySliderComponent.setLabelWidth(70);
+        timeDelaySliderComponent.setSpacing(10);
+        timeDelaySliderComponent.getLabelComponent().setSuffix("ms");
+
+        ChoiceComponent<String> sortingAlgorithmChoiceComponent = new ChoiceComponent<>(arraySorter.getSortingAlgorithmChoiceModel());
+        sortingAlgorithmChoiceComponent.setLabel("Algorithm");
+        sortingAlgorithmChoiceComponent.getRenderer().setPrefWidth(200);
+
+        alignmentChoiceModel = new ChoiceModel<>(ArrayAlignment.CENTER, List.of(ArrayAlignment.values()));
+        alignmentChoiceModel.addListener(currentValue ->
+        {
+            if (arrayComponent != null)
+            {
+                FxUtils.run(() -> arrayComponent.setElementAlignment(alignmentChoiceModel.get().getAlignment()));
+            }
+        });
+        ChoiceComponent<ArrayAlignment> alignmentChoices = new ChoiceComponent<>(alignmentChoiceModel);
+        alignmentChoices.setLabel("Alignment");
+
+        sortingSettings.add(new ComponentSettingGroup("Sorting", List.of(sortingAlgorithmChoiceComponent, timeDelaySliderComponent)));
     }
 
     @Override
@@ -33,32 +119,32 @@ public class SortingAlgoView implements AlgoView
     }
 
     @Override
-    public Node getVisualization()
+    public Pane getVisualizationPane()
     {
-        return arraySortView.getView();
+        return visualizationPane;
     }
 
     @Override
     public String getAlgoActionName()
     {
-        return null;
+        return "Sort";
     }
 
     @Override
     public void doAlgoAction()
     {
-
+        arraySorter.sort();
     }
 
     @Override
     public void doAlgoReset()
     {
-
+        arraySorter.scrambleArray();
     }
 
     @Override
     public List<ComponentSettingGroup> getSettings()
     {
-        return null;
+        return sortingSettings;
     }
 }
