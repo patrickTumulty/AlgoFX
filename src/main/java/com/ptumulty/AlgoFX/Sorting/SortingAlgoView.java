@@ -8,6 +8,8 @@ import com.ptumulty.AlgoFX.Sorting.SorterView.ArrayComponent;
 import com.ptumulty.ceramic.components.*;
 import com.ptumulty.ceramic.models.ChoiceModel;
 import com.ptumulty.ceramic.utility.FxUtils;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
@@ -24,6 +26,12 @@ public class SortingAlgoView implements AlgoView
     private ArrayComponent<Integer> arrayComponent;
     private ChoiceModel<ArrayAlignment> alignmentChoiceModel;
     private StackPane visualizationPane;
+    private final BooleanProperty busyProperty;
+
+    public SortingAlgoView()
+    {
+        busyProperty = new SimpleBooleanProperty(false);
+    }
     
     @Override
     public String getTitle()
@@ -34,6 +42,7 @@ public class SortingAlgoView implements AlgoView
     @Override
     public void initView()
     {
+
         arraySorter = new ArraySorterController();
         sortingSettings = new ArrayList<>();
         visualizationPane = new StackPane();
@@ -80,6 +89,7 @@ public class SortingAlgoView implements AlgoView
         arrayGenerationChoiceComponent.setLabel("Generation Type");
 
         ButtonComponent generateButtonComponent = new ButtonComponent("Generate", event -> FxUtils.run(this::generateNewArray));
+        generateButtonComponent.getRenderer().disableProperty().bind(busyProperty);
 
         sortingSettings.add(new ComponentSettingGroup("Array Generation", List.of(arraySizeSpinner, arrayGenerationChoiceComponent, generateButtonComponent)));
     }
@@ -139,18 +149,28 @@ public class SortingAlgoView implements AlgoView
     @Override
     public void doAlgoAction()
     {
+        busyProperty.set(true);
         arraySorter.sort();
+        busyProperty.set(false);
     }
 
     @Override
     public void doAlgoReset()
     {
+        busyProperty.set(true);
         arraySorter.scrambleArray();
+        busyProperty.set(false);
     }
 
     @Override
     public List<ComponentSettingGroup> getSettings()
     {
         return sortingSettings;
+    }
+
+    @Override
+    public BooleanProperty busyProperty()
+    {
+        return busyProperty;
     }
 }

@@ -2,6 +2,7 @@ package com.ptumulty.AlgoFX.AlgoView;
 
 import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import com.ptumulty.ceramic.models.ChoiceModel;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface AlgoView
     void doAlgoReset();
 
     List<ComponentSettingGroup> getSettings();
+
+    BooleanProperty busyProperty();
 }

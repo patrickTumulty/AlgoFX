@@ -155,6 +155,7 @@ public class AlgoViewLauncherView
     private VBox configureActionControlPane()
     {
         Button algoActionButton = new Button(currentAlgoView.getAlgoActionName());
+        algoActionButton.disableProperty().bind(currentAlgoView.busyProperty());
         algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
 
         Button settingsButton = new Button();
@@ -165,6 +166,7 @@ public class AlgoViewLauncherView
         settingsButton.setOnAction(event -> showSettings());
 
         Button algoResetButton = new Button("Reset");
+        algoResetButton.disableProperty().bind(currentAlgoView.busyProperty());
         algoResetButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoReset()));
 
         HBox subActionHBox = new HBox(algoResetButton, settingsButton);
