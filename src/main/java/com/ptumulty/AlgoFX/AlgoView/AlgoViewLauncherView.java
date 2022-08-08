@@ -207,7 +207,7 @@ public class AlgoViewLauncherView
         settingPopOverBorderPane.setTop(headerPane);
 
         double sceneHeight = mainStackPane.getScene().getHeight();
-        FxUtils.setStaticRegionSize(settingPopOverBorderPane, 350, (int) sceneHeight - 50);
+        FxUtils.setStaticRegionSize(settingPopOverBorderPane, 425, (int) sceneHeight - 50);
         settingPopOverBorderPane.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(20), null))); // TODO change to css
 
         VBox vBox = new VBox();
