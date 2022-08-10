@@ -53,7 +53,15 @@ public class AlgoViewLauncherView
 
         setAlgoMap();
 
-        configureGrid();
+        if (algoViewMap.size() == 1)
+        {
+            setAlgoView(algoViewMap.values().iterator().next());
+            backButton.visibleProperty().set(false);
+        }
+        else
+        {
+            configureGrid();
+        }
     }
 
     private void configureBackButton()
