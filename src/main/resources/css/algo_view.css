@@ -1,0 +1,32 @@
+
+.root {
+    -fx-font-family: Arial;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #DE20DD, #9509E0);
+    -fx-background-radius: 20;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #E375E2, #B155E3);
+}
+
+.algoAction {
+    -fx-min-width: 160;
+}
+
+.algoReset {
+    -fx-min-width: 100;
+}
+
+.algoSettings {
+
+}
+
+.algoControl {
+    -fx-min-height: 40;
+    -fx-font-weight: bold;
+    -fx-font-size: larger;
+}

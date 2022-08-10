@@ -163,17 +163,26 @@ public class AlgoViewLauncherView
     private VBox configureActionControlPane()
     {
         Button algoActionButton = new Button(currentAlgoView.getAlgoActionName());
+        algoActionButton.getStyleClass().add("algoAction");
+        algoActionButton.getStyleClass().add("algoControl");
         algoActionButton.disableProperty().bind(currentAlgoView.busyProperty());
         algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
 
         Button settingsButton = new Button();
-        settingsButton.setGraphic(new FontIcon(FontAwesomeSolid.COG));
+        settingsButton.getStyleClass().add("algoSettings");
+        settingsButton.getStyleClass().add("algoControl");
+        FontIcon cogIcon = new FontIcon(FontAwesomeSolid.COG);
+        cogIcon.setIconColor(Color.WHITE);
+        settingsButton.setGraphic(cogIcon);
         Circle circle = new Circle();
         circle.radiusProperty().bind(settingsButton.heightProperty());
+        settingsButton.minWidthProperty().bind(settingsButton.heightProperty());
         settingsButton.setShape(circle);
         settingsButton.setOnAction(event -> showSettings());
 
         Button algoResetButton = new Button("Reset");
+        algoResetButton.getStyleClass().add("algoReset");
+        algoResetButton.getStyleClass().add("algoControl");
         algoResetButton.disableProperty().bind(currentAlgoView.busyProperty());
         algoResetButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoReset()));
 

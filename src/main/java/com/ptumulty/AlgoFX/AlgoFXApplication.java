@@ -21,7 +21,7 @@ public class AlgoFXApplication extends Application
 
         FxUtils.setStaticRegionSize(launcherView.getView(), 1000, 600);
         Scene scene = new Scene(launcherView.getView());
-//        scene.getStylesheets().add("css/sleek.css");
+        scene.getStylesheets().add("css/algo_view.css");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
