@@ -140,9 +140,11 @@ public class AlgoViewLauncherView
             BorderPane.setMargin(vBox, new Insets(50, 10, 10, 10));
 
             Label algoViewLabel = new Label(algoView.getTitle());
+            algoViewLabel.setStyle("-fx-font-size: 30;");
             vBox.getChildren().add(algoViewLabel);
 
             ChoiceComponent<String> modes = new ChoiceComponent<>(algoView.getAlgoModes());
+            modes.getRenderer().setStyle("-fx-font-size: 18;");
             vBox.getChildren().add(modes.getRenderer());
 
             algoViewLayout.setCenter(algoView.getVisualizationPane());
@@ -217,7 +219,8 @@ public class AlgoViewLauncherView
         settingPopOverBorderPane = new BorderPane();
 
         StackPane headerPane = new StackPane();
-        Label title = new Label("Settings");
+        Label title = new Label(currentAlgoView.getTitle() + " Settings");
+        title.setStyle("-fx-font-size: 20");
         title.setAlignment(Pos.CENTER);
         title.setTextAlignment(TextAlignment.CENTER);
 
@@ -226,7 +229,9 @@ public class AlgoViewLauncherView
         StackPane.setMargin(title, new Insets(20));
 
         FontIcon xGraphic = new FontIcon(CarbonIcons.CLOSE);
+        xGraphic.setIconSize(30);
         Button closeButton = new Button();
+        closeButton.setStyle("-fx-background-color: transparent;");
         closeButton.setGraphic(xGraphic);
         closeButton.setOnAction(closeEvent -> hideSettings());
         headerPane.getChildren().add(1, closeButton);
@@ -236,7 +241,7 @@ public class AlgoViewLauncherView
 
         double sceneHeight = mainStackPane.getScene().getHeight();
         FxUtils.setStaticRegionSize(settingPopOverBorderPane, 425, (int) sceneHeight - 50);
-        settingPopOverBorderPane.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(20), null))); // TODO change to css
+        settingPopOverBorderPane.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, new CornerRadii(20), null))); // TODO change to css
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_CENTER);

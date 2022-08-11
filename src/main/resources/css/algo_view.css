@@ -1,28 +1,138 @@
 
 .root {
     -fx-font-family: Arial;
+    accent-color-bright: #DE20DD;
+    accent-color-dark: #9509E0;
+    accent-color-bright-pale: #E375E2;
+    accent-color-dark-pale: #B155E3;
+
+    on-hovor-color: mintcream;
+
+    accent-gradient: linear-gradient(to bottom, accent-color-bright, accent-color-dark);
+
+    -fx-background-color: darkgrey;
 }
 
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-fit-to-width: true;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/*
+ * Button
+ */
 .button {
     -fx-text-fill: white;
-    -fx-background-color: linear-gradient(to bottom, #DE20DD, #9509E0);
+    -fx-background-color: linear-gradient(to bottom, accent-color-bright, accent-color-dark);
     -fx-background-radius: 20;
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(to bottom, #E375E2, #B155E3);
+    -fx-background-color: linear-gradient(to bottom, accent-color-bright-pale, accent-color-dark-pale);
 }
 
+/*
+ * Choice Box
+ */
+.choice-box {
+    -fx-background-color: transparent;
+    -fx-background-insets: 1;
+    -fx-border-width: 1;
+    -fx-border-color: black;
+    -fx-border-radius: 20;
+}
+
+.choice-box:hover {
+    -fx-background-color: on-hovor-color;
+    -fx-background-radius: 20;
+    -fx-background-insets: 1;
+}
+
+.choice-box .arrow {
+    -fx-background-color: accent-color-bright;
+}
+
+/*
+ * Spinner
+ */
+.spinner {
+    -fx-background-color: transparent;
+}
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 1;
+    -fx-border-color: black;
+    -fx-border-radius: 10 0 0 10;
+}
+
+.spinner .text-field:hover {
+    -fx-background-radius: 10 0 0 10;
+    -fx-background-insets: 1;
+    -fx-background-color: on-hovor-color;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button  {
+    -fx-border-width: 1 1 1 0;
+    -fx-border-color: black;
+    -fx-background-color: transparent;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover  {
+    -fx-background-color: on-hovor-color;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: accent-color-bright;
+}
+
+.spinner .increment-arrow-button:hover {
+    -fx-background-radius: 0 10 0 0;
+}
+
+.spinner .decrement-arrow-button:hover {
+    -fx-background-radius: 0 0 10 0;
+}
+
+.spinner .increment-arrow-button  {
+    -fx-border-radius: 0 10 0 0;
+}
+
+.spinner .decrement-arrow-button  {
+    -fx-border-radius: 0 0 10 0;
+}
+
+/*
+ * Slider
+ */
+
+.slider .track {
+    -fx-background-color: accent-gradient;
+}
+
+.slider .thumb {
+    -fx-background-color: white;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-border-color: black;
+}
+
+/*
+ * Algo Action Control Panel
+ */
 .algoAction {
     -fx-min-width: 160;
 }
 
 .algoReset {
     -fx-min-width: 100;
-}
-
-.algoSettings {
-
 }
 
 .algoControl {

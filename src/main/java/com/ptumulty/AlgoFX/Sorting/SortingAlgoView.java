@@ -65,8 +65,8 @@ public class SortingAlgoView implements AlgoView
             }
             arrayComponent = new ArrayComponent<>(arraySorter.getArrayModel().get());
             arrayComponent.setElementAlignment(alignmentChoiceModel.get().getAlignment());
-            arrayComponent.setRectangleColor(Color.GREY);
-            arrayComponent.setSelectedRectangleColor(Color.LIGHTGREEN);
+            arrayComponent.setRectangleColor(Color.WHITE);
+            arrayComponent.setSelectedRectangleColor(Color.MAGENTA);
             visualizationPane.getChildren().add(0, arrayComponent.getRenderer());
             StackPane.setAlignment(arrayComponent.getRenderer(), Pos.CENTER);
             StackPane.setMargin(arrayComponent.getRenderer(), new Insets(0, 40, 0, 40));
