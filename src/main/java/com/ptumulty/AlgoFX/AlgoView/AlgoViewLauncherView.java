@@ -133,6 +133,7 @@ public class AlgoViewLauncherView
 
             algoViewLayout = new BorderPane();
             VBox vBox = new VBox();
+            vBox.getStyleClass().add("algoTitlePanel");
             vBox.setAlignment(Pos.CENTER);
             vBox.setSpacing(10);
             algoViewLayout.setTop(vBox);
@@ -140,6 +141,8 @@ public class AlgoViewLauncherView
             BorderPane.setMargin(vBox, new Insets(50, 10, 10, 10));
 
             Label algoViewLabel = new Label(algoView.getTitle());
+            algoViewLabel.setTextAlignment(TextAlignment.CENTER);
+            algoViewLabel.setAlignment(Pos.CENTER);
             algoViewLabel.setStyle("-fx-font-size: 30;");
             vBox.getChildren().add(algoViewLabel);
 
@@ -151,6 +154,7 @@ public class AlgoViewLauncherView
             BorderPane.setAlignment(algoView.getVisualizationPane(), Pos.CENTER);
 
             VBox algoActionControlPanel = configureActionControlPane();
+            algoActionControlPanel.getStyleClass().add("algoControlPanel");
 
             algoViewLayout.setBottom(algoActionControlPanel);
             BorderPane.setMargin(algoActionControlPanel, new Insets(10, 10, 50, 10));
@@ -240,8 +244,8 @@ public class AlgoViewLauncherView
         settingPopOverBorderPane.setTop(headerPane);
 
         double sceneHeight = mainStackPane.getScene().getHeight();
-        FxUtils.setStaticRegionSize(settingPopOverBorderPane, 425, (int) sceneHeight - 50);
-        settingPopOverBorderPane.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, new CornerRadii(20), null))); // TODO change to css
+        FxUtils.setStaticRegionSize(settingPopOverBorderPane, 500, (int) sceneHeight - 50);
+        settingPopOverBorderPane.getStyleClass().add("algoSettingsPanel");
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_CENTER);

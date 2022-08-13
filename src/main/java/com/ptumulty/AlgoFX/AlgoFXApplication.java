@@ -1,7 +1,6 @@
 package com.ptumulty.AlgoFX;
 
 import com.ptumulty.AlgoFX.AlgoView.AlgoViewLauncherView;
-import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -19,11 +18,15 @@ public class AlgoFXApplication extends Application
     {
         AlgoViewLauncherView launcherView = new AlgoViewLauncherView(3);
 
-        FxUtils.setStaticRegionSize(launcherView.getView(), 1000, 600);
+        launcherView.getView().getStyleClass().add("panel-primary");
+        launcherView.getView().setMinSize(1000, 600);
+
         Scene scene = new Scene(launcherView.getView());
+        scene.getStylesheets().add("css/sleek.css");
         scene.getStylesheets().add("css/algo_view.css");
+        scene.getStylesheets().add("rectangle.css");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
+        primaryStage.setTitle("AlgoFX");
         primaryStage.show();
     }
 }
