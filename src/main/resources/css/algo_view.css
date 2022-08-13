@@ -42,3 +42,17 @@
     -fx-max-width: 240;
     -fx-min-width: 350;
 }
+
+.algoLabeledTile {
+    -fx-background-radius: 40;
+    -fx-background-color: #3c3f41;
+    -fx-border-width: 2;
+    -fx-border-color: accent-gradient;
+    -fx-border-radius: 40;
+    -fx-font-size: 24pt;
+    -fx-effect: dropshadow(gaussian, black, 30, 0.1, 5, 10);
+}
+
+.algoLabeledTile:hover {
+    -fx-background-color: on-hovor-color;
+}

@@ -6,6 +6,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AlgoView
 {
@@ -19,7 +20,7 @@ public interface AlgoView
 
     String getAlgoActionName();
 
-    ChoiceModel<String> getAlgoModes();
+    Optional<ChoiceModel<String>> getAlgoModes();
 
     void doAlgoAction();
 

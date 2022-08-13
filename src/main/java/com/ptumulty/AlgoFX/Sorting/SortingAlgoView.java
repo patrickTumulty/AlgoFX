@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SortingAlgoView implements AlgoView
 {
@@ -141,9 +142,9 @@ public class SortingAlgoView implements AlgoView
     }
 
     @Override
-    public ChoiceModel<String> getAlgoModes()
+    public Optional<ChoiceModel<String>> getAlgoModes()
     {
-        return arraySorter.getSortingAlgorithmChoiceModel();
+        return Optional.of(arraySorter.getSortingAlgorithmChoiceModel());
     }
 
     @Override
