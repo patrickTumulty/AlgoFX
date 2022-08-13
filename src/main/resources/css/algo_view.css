@@ -16,7 +16,7 @@
 }
 
 .algoControlPanel {
-    -fx-background-color: #3c3f41;
+    -fx-background-color: dark-foreground;
     -fx-background-radius: 40;
     -fx-border-radius: 40;
     -fx-border-width: 1;
@@ -27,13 +27,13 @@
 }
 
 .algoSettingsPanel {
-    -fx-background-color: #3c3f41;
+    -fx-background-color: dark-foreground;
     -fx-background-radius: 40;
     -fx-font-size: 12pt;
 }
 
 .algoTitlePanel {
-    -fx-background-color: #3c3f41;
+    -fx-background-color: dark-foreground;
     -fx-border-radius: 40;
     -fx-border-width: 1;
     -fx-border-color: darkgrey;;
@@ -45,7 +45,7 @@
 
 .algoLabeledTile {
     -fx-background-radius: 40;
-    -fx-background-color: #3c3f41;
+    -fx-background-color: dark-foreground;
     -fx-border-width: 2;
     -fx-border-color: accent-gradient;
     -fx-border-radius: 40;

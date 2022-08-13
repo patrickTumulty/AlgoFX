@@ -6,11 +6,13 @@
     accent-color-bright-pale: #E375E2;
     accent-color-dark-pale: #B155E3;
 
+    dark-background: #2b2b2b;
+    dark-foreground: #3c3f41;
     on-hovor-color: darkgrey;
 
     accent-gradient: linear-gradient(to bottom, accent-color-bright, accent-color-dark);
 
-    -fx-background-color: #2b2b2b;
+    -fx-background-color: dark-background;
 
     -fx-light-text-color: mintcream;
     -fx-mid-text-color: mintcream;
@@ -58,6 +60,19 @@
 
 .choice-box .arrow {
     -fx-background-color: accent-color-bright;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: dark-foreground;
+    -fx-border-color: darkgrey;
+}
+
+.choice-box .context-menu .list-view {
+    -fx-background-color: transparent;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: accent-gradient;
 }
 
 /*
