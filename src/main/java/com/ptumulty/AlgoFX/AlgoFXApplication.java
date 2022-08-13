@@ -24,7 +24,6 @@ public class AlgoFXApplication extends Application
         Scene scene = new Scene(launcherView.getView());
         scene.getStylesheets().add("css/sleek.css");
         scene.getStylesheets().add("css/algo_view.css");
-        scene.getStylesheets().add("css/rectangle.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("AlgoFX");
         primaryStage.show();

@@ -56,3 +56,12 @@
 .algoLabeledTile:hover {
     -fx-background-color: on-hovor-color;
 }
+
+.algoCloseButton {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+}
+
+.algoCloseButton:hover {
+    -fx-background-color: on-hovor-color;
+}

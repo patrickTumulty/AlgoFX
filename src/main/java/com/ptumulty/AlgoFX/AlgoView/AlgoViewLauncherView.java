@@ -270,9 +270,10 @@ public class AlgoViewLauncherView
         StackPane.setMargin(title, new Insets(20));
 
         FontIcon xGraphic = new FontIcon(CarbonIcons.CLOSE);
+        xGraphic.setIconColor(Color.MINTCREAM);
         xGraphic.setIconSize(30);
         Button closeButton = new Button();
-        closeButton.setStyle("-fx-background-color: transparent;");
+        closeButton.getStyleClass().add("algoCloseButton");
         closeButton.setGraphic(xGraphic);
         closeButton.setOnAction(closeEvent -> hideSettings());
         headerPane.getChildren().add(1, closeButton);
