@@ -92,7 +92,18 @@ public class SortingAlgoView implements AlgoView
         ButtonComponent generateButtonComponent = new ButtonComponent("Generate", event -> FxUtils.run(this::generateNewArray));
         generateButtonComponent.getRenderer().disableProperty().bind(busyProperty);
 
-        sortingSettings.add(new ComponentSettingGroup("Array Generation", List.of(arraySizeSpinner, arrayGenerationChoiceComponent, generateButtonComponent)));
+        alignmentChoiceModel = new ChoiceModel<>(ArrayAlignment.CENTER, List.of(ArrayAlignment.values()));
+        alignmentChoiceModel.addListener(currentValue ->
+        {
+            if (arrayComponent != null)
+            {
+                FxUtils.run(() -> arrayComponent.setElementAlignment(alignmentChoiceModel.get().getAlignment()));
+            }
+        });
+        ChoiceComponent<ArrayAlignment> alignmentChoices = new ChoiceComponent<>(alignmentChoiceModel);
+        alignmentChoices.setLabel("Alignment");
+
+        sortingSettings.add(new ComponentSettingGroup("Array Generation", List.of(arraySizeSpinner, arrayGenerationChoiceComponent, alignmentChoices, generateButtonComponent)));
     }
 
     private void configureSortingSetting()
@@ -108,17 +119,6 @@ public class SortingAlgoView implements AlgoView
         ChoiceComponent<String> sortingAlgorithmChoiceComponent = new ChoiceComponent<>(arraySorter.getSortingAlgorithmChoiceModel());
         sortingAlgorithmChoiceComponent.setLabel("Algorithm");
         sortingAlgorithmChoiceComponent.getRenderer().setPrefWidth(200);
-
-        alignmentChoiceModel = new ChoiceModel<>(ArrayAlignment.CENTER, List.of(ArrayAlignment.values()));
-        alignmentChoiceModel.addListener(currentValue ->
-        {
-            if (arrayComponent != null)
-            {
-                FxUtils.run(() -> arrayComponent.setElementAlignment(alignmentChoiceModel.get().getAlignment()));
-            }
-        });
-        ChoiceComponent<ArrayAlignment> alignmentChoices = new ChoiceComponent<>(alignmentChoiceModel);
-        alignmentChoices.setLabel("Alignment");
 
         sortingSettings.add(new ComponentSettingGroup("Sorting", List.of(sortingAlgorithmChoiceComponent, timeDelaySliderComponent)));
     }
