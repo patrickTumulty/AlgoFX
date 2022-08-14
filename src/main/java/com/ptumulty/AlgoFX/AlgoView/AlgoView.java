@@ -26,6 +26,8 @@ public interface AlgoView
 
     void doAlgoReset();
 
+    void doAlgoCancel();
+
     List<ComponentSettingGroup> getSettings();
 
     BooleanProperty busyProperty();

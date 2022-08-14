@@ -12,6 +12,8 @@ public interface TimeControlledSorter
 
     void sort(ArrayModel<Integer> arrayModel);
 
+    void cancelSortInProgress();
+
     static TimeControlledSorter get(String sorterName)
     {
         for (TimeControlledSorter sorter : Lookup.getDefault().lookupAll(TimeControlledSorter.class))

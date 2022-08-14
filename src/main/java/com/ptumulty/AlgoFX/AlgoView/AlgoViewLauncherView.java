@@ -234,7 +234,19 @@ public class AlgoViewLauncherView
         Button algoActionButton = new Button(currentAlgoView.getAlgoActionName());
         algoActionButton.getStyleClass().add("algoAction");
         algoActionButton.getStyleClass().add("algoControl");
-        algoActionButton.disableProperty().bind(currentAlgoView.busyProperty());
+        currentAlgoView.busyProperty().addListener((observable, oldValue, newValue) ->
+        {
+            if (newValue)
+            {
+                FxUtils.run(() -> algoActionButton.setText("Cancel"));
+                algoActionButton.setOnAction(event -> currentAlgoView.doAlgoCancel());
+            }
+            else
+            {
+                FxUtils.run(() -> algoActionButton.setText(currentAlgoView.getAlgoActionName()));
+                algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
+            }
+        });
         algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
         return algoActionButton;
     }

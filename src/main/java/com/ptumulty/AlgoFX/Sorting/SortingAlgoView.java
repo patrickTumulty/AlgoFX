@@ -23,6 +23,7 @@ import java.util.Optional;
 public class SortingAlgoView implements AlgoView
 {
     private ArraySorterController arraySorter;
+
     private List<ComponentSettingGroup> sortingSettings;
     private ArrayComponent<Integer> arrayComponent;
     private ChoiceModel<ArrayAlignment> alignmentChoiceModel;
@@ -158,6 +159,12 @@ public class SortingAlgoView implements AlgoView
         busyProperty.set(true);
         arraySorter.scrambleArray();
         busyProperty.set(false);
+    }
+
+    @Override
+    public void doAlgoCancel()
+    {
+        arraySorter.getCurrentTimeControlledSorter().cancelSortInProgress();
     }
 
     @Override

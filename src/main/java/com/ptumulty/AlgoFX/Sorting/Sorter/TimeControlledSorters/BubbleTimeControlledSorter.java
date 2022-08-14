@@ -1,7 +1,6 @@
 package com.ptumulty.AlgoFX.Sorting.Sorter.TimeControlledSorters;
 
 import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
-import com.ptumulty.ceramic.utility.ThreadUtils;
 
 public class BubbleTimeControlledSorter extends AbstractTimeControlledSorter
 {
@@ -12,14 +11,14 @@ public class BubbleTimeControlledSorter extends AbstractTimeControlledSorter
     }
 
     @Override
-    public void sort(ArrayModel<Integer> arrayModel)
+    public void doSort(ArrayModel<Integer> arrayModel) throws CancelSortException
     {
         int len = arrayModel.size();
-        for (int i = 0; i < len; i++, ThreadUtils.safeSleep(timeStepIntegerModel.get()))
+        for (int i = 0; oc.countConditional(i < len); i++, doCancelableDelay())
         {
-            for (int j = 1; j < (len - i); j++, ThreadUtils.safeSleep(timeStepIntegerModel.get()))
+            for (int j = 1; oc.countConditional(j < (len - i)); j++, doCancelableDelay())
             {
-                if (arrayModel.get(j - 1) > arrayModel.get(j))
+                if (oc.countConditional(arrayModel.get(j - 1) > arrayModel.get(j)))
                 {
                     arrayModel.swap(j - 1, j);
                 }
