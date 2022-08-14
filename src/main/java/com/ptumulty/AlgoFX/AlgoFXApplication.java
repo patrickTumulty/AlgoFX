@@ -17,8 +17,6 @@ public class AlgoFXApplication extends Application
     public void start(Stage primaryStage)
     {
         AlgoViewLauncherView launcherView = new AlgoViewLauncherView(3);
-
-        launcherView.getView().getStyleClass().add("panel-primary");
         launcherView.getView().setMinSize(1000, 600);
 
         Scene scene = new Scene(launcherView.getView());

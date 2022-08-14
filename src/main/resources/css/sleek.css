@@ -144,3 +144,16 @@
 }
 
 
+/*
+ * Text Field
+ */
+.text-field {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: black;
+}
+
+.text-field:hover {
+    -fx-background-color: on-hovor-color;
+}

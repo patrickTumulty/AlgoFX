@@ -111,10 +111,7 @@ public class SortingAlgoView implements AlgoView
         BoundSliderComponent timeDelaySliderComponent = new BoundSliderComponent(arraySorter.getCurrentTimeControlledSorter().getTimeStepIntegerModel());
         arraySorter.getSortingAlgorithmChoiceModel().addListener(currentValue ->
                 timeDelaySliderComponent.attachModel(arraySorter.getCurrentTimeControlledSorter().getTimeStepIntegerModel()));
-        timeDelaySliderComponent.setLabel("Delay");
-        timeDelaySliderComponent.setLabelWidth(70);
-        timeDelaySliderComponent.setSpacing(10);
-        timeDelaySliderComponent.getLabelComponent().setSuffix("ms");
+        timeDelaySliderComponent.setLabel("Delay (ms)");
 
         ChoiceComponent<String> sortingAlgorithmChoiceComponent = new ChoiceComponent<>(arraySorter.getSortingAlgorithmChoiceModel());
         sortingAlgorithmChoiceComponent.setLabel("Algorithm");

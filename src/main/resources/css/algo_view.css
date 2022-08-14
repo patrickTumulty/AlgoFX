@@ -19,7 +19,7 @@
     -fx-background-color: dark-foreground;
     -fx-background-radius: 40;
     -fx-border-radius: 40;
-    -fx-border-width: 1;
+    -fx-border-width: 2;
     -fx-border-color: darkgrey;
     -fx-min-height: 130;
     -fx-max-width: 240;
@@ -35,7 +35,7 @@
 .algoTitlePanel {
     -fx-background-color: dark-foreground;
     -fx-border-radius: 40;
-    -fx-border-width: 1;
+    -fx-border-width: 2;
     -fx-border-color: darkgrey;;
     -fx-background-radius: 40;
     -fx-min-height: 100;

@@ -294,6 +294,7 @@ public class AlgoViewLauncherView
         }
 
         ScrollPane scrollPane = new ScrollPane(vBox);
+        scrollPane.setFitToWidth(true);
         scrollPane.addEventFilter(ScrollEvent.SCROLL, event ->
         {
             if (event.getDeltaX() != 0)
@@ -302,7 +303,7 @@ public class AlgoViewLauncherView
             }
         });
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        vBox.minWidthProperty().bind(scrollPane.widthProperty());
+        vBox.minWidthProperty().bind(scrollPane.widthProperty().subtract(40));
 
         settingPopOverBorderPane.setCenter(scrollPane);
         BorderPane.setMargin(scrollPane, new Insets(0, 10, 10, 10));
