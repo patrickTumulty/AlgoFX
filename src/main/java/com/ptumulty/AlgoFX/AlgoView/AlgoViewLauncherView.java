@@ -35,6 +35,7 @@ public class AlgoViewLauncherView
     private Rectangle settingsSeparator;
     private BorderPane settingPopOverBorderPane;
     private VBox algoTitlePane;
+    private Button algoInfoButton;
 
     public AlgoViewLauncherView(int cols)
     {
@@ -52,6 +53,8 @@ public class AlgoViewLauncherView
 
         configureBackButton();
 
+        configureAlgoInfoButton();
+
         setAlgoMap();
 
         configureGrid();
@@ -65,6 +68,7 @@ public class AlgoViewLauncherView
                 {
                     addGridView();
                     removeBackButton();
+                    mainStackPane.getChildren().remove(algoInfoButton);
                 }));
         backButton.setMinWidth(50);
         backButton.setMinHeight(50);
@@ -73,6 +77,18 @@ public class AlgoViewLauncherView
         arrowLeftIcon.setIconColor(Color.MINTCREAM);
         arrowLeftIcon.setIconSize(20);
         backButton.setGraphic(arrowLeftIcon);
+    }
+
+    private void configureAlgoInfoButton()
+    {
+        algoInfoButton = new Button();
+        algoInfoButton.setMinWidth(50);
+        algoInfoButton.setMinHeight(50);
+        algoInfoButton.setShape(new Circle(50));
+        FontIcon fontIcon = new FontIcon(FontAwesomeSolid.CHART_BAR);
+        fontIcon.setIconColor(Color.MINTCREAM);
+        fontIcon.setIconSize(20);
+        algoInfoButton.setGraphic(fontIcon);
     }
 
     private void addGridView()
@@ -142,7 +158,16 @@ public class AlgoViewLauncherView
             mainStackPane.getChildren().add(0, algoViewLayout);
 
             addBackButton();
+
+            addAlgoInfoButton();
         });
+    }
+
+    private void addAlgoInfoButton()
+    {
+        mainStackPane.getChildren().add(2, algoInfoButton);
+        StackPane.setAlignment(algoInfoButton, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(algoInfoButton, new Insets(10));
     }
 
     private void configureAlgoControlPanel()
