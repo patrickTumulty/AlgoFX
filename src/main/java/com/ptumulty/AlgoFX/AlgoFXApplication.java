@@ -16,7 +16,7 @@ public class AlgoFXApplication extends Application
     @Override
     public void start(Stage primaryStage)
     {
-        AlgoViewLauncherView launcherView = new AlgoViewLauncherView(3);
+        AlgoViewLauncherView launcherView = new AlgoViewLauncherView();
         launcherView.getView().setMinSize(1000, 600);
 
         Scene scene = new Scene(launcherView.getView());

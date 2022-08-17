@@ -4,6 +4,7 @@ import com.ptumulty.ceramic.components.ChoiceComponent;
 import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import com.ptumulty.ceramic.utility.FxUtils;
 import com.ptumulty.ceramic.utility.ThreadUtils;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,39 +26,88 @@ import java.util.Map;
 
 public class AlgoViewLauncherView
 {
-    private final GridPane gridPane;
+    private final AlgoLauncherGridView launcherGridView;
     private final StackPane mainStackPane;
     private final Map<String, AlgoView> algoViewMap;
+    private final BorderPane headerPane;
+    private HBox secondaryActionsContainer;
+    private HBox capabilitiesActionsContainer;
+    private BorderPane visualizationOverlay;
+    private BorderPane actionsPane;
     private AlgoView currentAlgoView;
-    private final int columns;
     private Button backButton;
     private BorderPane algoViewLayout;
     private Rectangle settingsSeparator;
     private BorderPane settingPopOverBorderPane;
     private VBox algoTitlePane;
     private Button algoInfoButton;
+    private Button algoResetButton;
+    private Button algoSettingsButton;
+    private Button algoActionButton;
+    private ChangeListener<Boolean> actionBusyListener;
 
-    public AlgoViewLauncherView(int cols)
+    public AlgoViewLauncherView()
     {
-        columns = cols;
-
         mainStackPane = new StackPane();
         algoViewMap = new HashMap<>();
 
-        gridPane = new GridPane();
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(30);
-        gridPane.setVgap(30);
+        populateAlgoViewMap();
+
+        launcherGridView = new AlgoLauncherGridView(this, algoViewMap);
 
         addGridView();
 
         configureBackButton();
 
-        configureAlgoInfoButton();
+        configureActionsContainer();
 
-        setAlgoMap();
+        visualizationOverlay = new BorderPane();
 
-        configureGrid();
+        visualizationOverlay.setBottom(actionsPane);
+        BorderPane.setAlignment(actionsPane, Pos.CENTER);
+
+        headerPane = new BorderPane();
+        headerPane.setLeft(backButton);
+        BorderPane.setAlignment(backButton, Pos.CENTER_LEFT);
+        BorderPane.setMargin(backButton, new Insets(10));
+
+        visualizationOverlay.setTop(headerPane);
+        BorderPane.setAlignment(headerPane, Pos.CENTER);
+
+        configureAlgoTitlePanel();
+
+
+
+
+
+
+
+
+    }
+
+    private void configureActionsContainer()
+    {
+        actionsPane = new BorderPane();
+
+        secondaryActionsContainer = new HBox();
+        secondaryActionsContainer.setSpacing(10);
+        secondaryActionsContainer.setAlignment(Pos.CENTER_LEFT);
+        actionsPane.setLeft(secondaryActionsContainer);
+        BorderPane.setMargin(secondaryActionsContainer, new Insets(0, 0, 10, 10));
+        BorderPane.setAlignment(secondaryActionsContainer, Pos.CENTER);
+
+        capabilitiesActionsContainer = new HBox();
+        capabilitiesActionsContainer.setSpacing(10);
+        capabilitiesActionsContainer.setAlignment(Pos.CENTER_RIGHT);
+        actionsPane.setRight(capabilitiesActionsContainer);
+        BorderPane.setMargin(capabilitiesActionsContainer, new Insets(0, 10, 0, 10));
+        BorderPane.setAlignment(capabilitiesActionsContainer, Pos.CENTER);
+
+        configureAlgoActionButton();
+
+        configureAlgoSettingsButton();
+
+        configureAlgoResetButton();
     }
 
     private void configureBackButton()
@@ -97,8 +147,8 @@ public class AlgoViewLauncherView
         {
             mainStackPane.getChildren().remove(0);
         }
-        mainStackPane.getChildren().add(0, gridPane);
-        StackPane.setAlignment(gridPane, Pos.CENTER);
+        mainStackPane.getChildren().add(0, launcherGridView);
+        StackPane.setAlignment(launcherGridView, Pos.CENTER);
     }
 
     private void removeBackButton()
@@ -113,19 +163,7 @@ public class AlgoViewLauncherView
         StackPane.setMargin(backButton, new Insets(10));
     }
 
-    private void configureGrid()
-    {
-        int counter = 0;
-        for (AlgoView algoView : algoViewMap.values())
-        {
-            LabeledTile labeledTile = new LabeledTile(algoView.getTitle());
-            labeledTile.setOnMouseClicked(event -> setAlgoView(algoView));
-            gridPane.add(labeledTile, counter % columns, counter / columns);
-            counter++;
-        }
-    }
-
-    private void setAlgoMap()
+    private void populateAlgoViewMap()
     {
         for (AlgoView algoView : Lookup.getDefault().lookupAll(AlgoView.class))
         {
@@ -133,33 +171,25 @@ public class AlgoViewLauncherView
         }
     }
 
-    private void setAlgoView(AlgoView algoView)
+    public void setAlgoView(AlgoView algoView)
     {
         setCurrentAlgoView(algoView);
 
         FxUtils.run(() ->
         {
-            mainStackPane.getChildren().remove(gridPane);
+            mainStackPane.getChildren().remove(launcherGridView);
 
-            algoViewLayout = new BorderPane();
-
-            configureAlgoTitlePanel();
+            algoActionButton.setText(algoView.getAlgoActionName());
 
             configureAlgoViewTitle(algoView);
 
             configureAlgoModesIfPresent(algoView);
 
-            algoViewLayout.setCenter(algoView.getVisualizationPane());
-            BorderPane.setAlignment(algoView.getVisualizationPane(), Pos.CENTER);
-            BorderPane.setMargin(algoView.getVisualizationPane(), new Insets(10));
+            mainStackPane.getChildren().add(algoView.getVisualizationPane());
+            StackPane.setAlignment(algoView.getVisualizationPane(), Pos.CENTER);
+            StackPane.setMargin(algoView.getVisualizationPane(), new Insets(10));
 
-            configureAlgoControlPanel();
-
-            mainStackPane.getChildren().add(0, algoViewLayout);
-
-            addBackButton();
-
-            addAlgoInfoButton();
+            mainStackPane.getChildren().add(visualizationOverlay);
         });
     }
 
@@ -168,15 +198,6 @@ public class AlgoViewLauncherView
         mainStackPane.getChildren().add(2, algoInfoButton);
         StackPane.setAlignment(algoInfoButton, Pos.BOTTOM_RIGHT);
         StackPane.setMargin(algoInfoButton, new Insets(10));
-    }
-
-    private void configureAlgoControlPanel()
-    {
-        VBox algoActionControlPanel = configureActionControlPane();
-        algoActionControlPanel.getStyleClass().add("algoControlPanel");
-        algoViewLayout.setBottom(algoActionControlPanel);
-        BorderPane.setMargin(algoActionControlPanel, new Insets(0, 0, 10, 0));
-        BorderPane.setAlignment(algoActionControlPanel, Pos.BOTTOM_CENTER);
     }
 
     private void configureAlgoModesIfPresent(AlgoView algoView)
@@ -204,62 +225,45 @@ public class AlgoViewLauncherView
         algoTitlePane.getStyleClass().add("algoTitlePanel");
         algoTitlePane.setAlignment(Pos.CENTER);
         algoTitlePane.setSpacing(10);
-        algoViewLayout.setTop(algoTitlePane);
-        BorderPane.setAlignment(algoTitlePane, Pos.TOP_CENTER);
-        BorderPane.setMargin(algoTitlePane, new Insets(10, 0, 0, 0));
+
+        headerPane.setCenter(algoTitlePane);
+        BorderPane.setAlignment(algoTitlePane, Pos.CENTER);
     }
 
-    private VBox configureActionControlPane()
+    private void configureAlgoResetButton()
     {
-        Button algoActionButton = configureAlgoActionButton();
-
-        Button settingsButton = configureAlgoSettingsButton();
-
-        Button algoResetButton = configureAlgoResetButton();
-
-        HBox subActionHBox = new HBox(algoResetButton, settingsButton);
-        subActionHBox.setSpacing(10);
-        subActionHBox.setAlignment(Pos.CENTER);
-
-        VBox algoActionControlPanel = new VBox(algoActionButton, subActionHBox);
-        algoActionControlPanel.setSpacing(10);
-        algoActionControlPanel.setAlignment(Pos.CENTER);
-
-        return algoActionControlPanel;
-    }
-
-    private Button configureAlgoResetButton()
-    {
-        Button algoResetButton = new Button("Reset");
+        algoResetButton = new Button("Reset");
         algoResetButton.getStyleClass().add("algoReset");
         algoResetButton.getStyleClass().add("algoControl");
-        algoResetButton.disableProperty().bind(currentAlgoView.busyProperty());
+
         algoResetButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoReset()));
-        return algoResetButton;
+
+        secondaryActionsContainer.getChildren().add(algoResetButton);
     }
 
-    private Button configureAlgoSettingsButton()
+    private void configureAlgoSettingsButton()
     {
-        Button settingsButton = new Button();
-        settingsButton.getStyleClass().add("algoSettings");
-        settingsButton.getStyleClass().add("algoControl");
+        algoSettingsButton = new Button();
+        algoSettingsButton.getStyleClass().add("algoSettings");
+        algoSettingsButton.getStyleClass().add("algoControl");
         FontIcon cogIcon = new FontIcon(FontAwesomeSolid.COG);
         cogIcon.setIconColor(Color.WHITE);
-        settingsButton.setGraphic(cogIcon);
+        algoSettingsButton.setGraphic(cogIcon);
         Circle circle = new Circle();
-        circle.radiusProperty().bind(settingsButton.heightProperty());
-        settingsButton.minWidthProperty().bind(settingsButton.heightProperty());
-        settingsButton.setShape(circle);
-        settingsButton.setOnAction(event -> showSettings());
-        return settingsButton;
+        circle.radiusProperty().bind(algoSettingsButton.heightProperty());
+        algoSettingsButton.minWidthProperty().bind(algoSettingsButton.heightProperty());
+        algoSettingsButton.setShape(circle);
+        algoSettingsButton.setOnAction(event -> showSettings());
+
+        secondaryActionsContainer.getChildren().add(algoSettingsButton);
     }
 
-    private Button configureAlgoActionButton()
+    private void configureAlgoActionButton()
     {
-        Button algoActionButton = new Button(currentAlgoView.getAlgoActionName());
+        algoActionButton = new Button();
         algoActionButton.getStyleClass().add("algoAction");
         algoActionButton.getStyleClass().add("algoControl");
-        currentAlgoView.busyProperty().addListener((observable, oldValue, newValue) ->
+        actionBusyListener = (observable, oldValue, newValue) ->
         {
             if (newValue)
             {
@@ -271,9 +275,11 @@ public class AlgoViewLauncherView
                 FxUtils.run(() -> algoActionButton.setText(currentAlgoView.getAlgoActionName()));
                 algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
             }
-        });
+        };
         algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
-        return algoActionButton;
+        actionsPane.setCenter(algoActionButton);
+        BorderPane.setAlignment(algoActionButton, Pos.CENTER);
+        BorderPane.setMargin(algoActionButton, new Insets(10));
     }
 
     private void hideSettings()
@@ -359,9 +365,14 @@ public class AlgoViewLauncherView
         if (currentAlgoView != null)
         {
             currentAlgoView.dispose();
+            currentAlgoView.busyProperty().removeListener(actionBusyListener);
+            algoResetButton.disableProperty().unbind();
         }
 
         currentAlgoView = algoView;
+
+        currentAlgoView.busyProperty().addListener(actionBusyListener);
+        algoResetButton.disableProperty().bind(currentAlgoView.busyProperty());
 
         currentAlgoView.initView();
     }
@@ -369,28 +380,5 @@ public class AlgoViewLauncherView
     public Pane getView()
     {
         return mainStackPane;
-    }
-
-    private class LabeledTile extends Region
-    {
-        LabeledTile(String text)
-        {
-            FxUtils.setStaticRegionSize(this, 175, 175);
-            Label label = new Label(text);
-            label.getStyleClass().add("algoLabeledTile");
-            label.setAlignment(Pos.CENTER);
-            label.setTextAlignment(TextAlignment.CENTER);
-            label.setWrapText(true);
-
-            label.maxWidthProperty().bind(maxWidthProperty());
-            label.prefWidthProperty().bind(prefWidthProperty());
-            label.minWidthProperty().bind(minWidthProperty());
-            label.maxHeightProperty().bind(maxHeightProperty());
-            label.prefHeightProperty().bind(prefHeightProperty());
-            label.minHeightProperty().bind(minHeightProperty());
-
-            getChildren().add(label);
-        }
-
     }
 }
