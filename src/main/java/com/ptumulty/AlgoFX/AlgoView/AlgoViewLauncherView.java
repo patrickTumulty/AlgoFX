@@ -27,6 +27,7 @@ public class AlgoViewLauncherView
     private final Map<String, AlgoAsset> algoAssetMap;
     private final FourCornerPane fourCornerOverlay;
     private final ChoiceComponent<String> algoModesComponent;
+    private final AlgoSettingsPane algoSettingsPane;
     private AlgoAsset currentAlgoAsset;
     private Button backButton;
     private Region settingsSeparator;
@@ -36,7 +37,6 @@ public class AlgoViewLauncherView
     private Button algoActionButton;
     private ChangeListener<Boolean> actionBusyListener;
     private Label algoViewLabel;
-    private AlgoSettingsPane algoSettingsPane;
 
     public AlgoViewLauncherView()
     {
