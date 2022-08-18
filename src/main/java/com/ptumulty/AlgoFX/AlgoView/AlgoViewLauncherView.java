@@ -2,7 +2,6 @@ package com.ptumulty.AlgoFX.AlgoView;
 
 import com.ptumulty.ceramic.FourCornerPane;
 import com.ptumulty.ceramic.components.ChoiceComponent;
-import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import com.ptumulty.ceramic.utility.FxUtils;
 import com.ptumulty.ceramic.utility.ThreadUtils;
 import javafx.beans.value.ChangeListener;
@@ -10,14 +9,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
-import org.kordamp.ikonli.carbonicons.CarbonIcons;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.openide.util.Lookup;
@@ -34,14 +29,14 @@ public class AlgoViewLauncherView
     private final ChoiceComponent<String> algoModesComponent;
     private AlgoAsset currentAlgoAsset;
     private Button backButton;
-    private Rectangle settingsSeparator;
-    private BorderPane settingPopOverBorderPane;
+    private Region settingsSeparator;
     private VBox algoTitlePane;
     private Button algoResetButton;
     private Button algoSettingsButton;
     private Button algoActionButton;
     private ChangeListener<Boolean> actionBusyListener;
     private Label algoViewLabel;
+    private AlgoSettingsPane algoSettingsPane;
 
     public AlgoViewLauncherView()
     {
@@ -75,6 +70,11 @@ public class AlgoViewLauncherView
 
         configureAlgoActionButton();
         fourCornerOverlay.setBottomNode(algoActionButton);
+
+        configureSeparator();
+
+        algoSettingsPane = new AlgoSettingsPane(mainStackPane);
+        algoSettingsPane.addListener(this::hideSettings);
     }
 
     private void configureBackButton()
@@ -122,23 +122,26 @@ public class AlgoViewLauncherView
         }
     }
 
-    public void setAlgoView(AlgoAsset algoView)
+    public void setAlgoView(AlgoAsset algoAsset)
     {
-        setCurrentAlgoAsset(algoView);
+        setCurrentAlgoAsset(algoAsset);
 
         FxUtils.run(() ->
         {
             mainStackPane.getChildren().remove(launcherGridView);
 
-            algoActionButton.setText(algoView.getAlgoActionName());
+            algoActionButton.setText(algoAsset.getAlgoActionName());
 
-            algoViewLabel.setText(algoView.getTitle());
+            algoViewLabel.setText(algoAsset.getTitle());
 
-            configureAlgoModesIfPresent(algoView);
+            algoSettingsPane.dispose();
+            algoSettingsPane.attachAlgoAsset(algoAsset);
 
-            mainStackPane.getChildren().add(algoView.getVisualizationPane());
-            StackPane.setAlignment(algoView.getVisualizationPane(), Pos.CENTER);
-            StackPane.setMargin(algoView.getVisualizationPane(), new Insets(10));
+            configureAlgoModesIfPresent(algoAsset);
+
+            fourCornerOverlay.setCenter(algoAsset.getVisualizationPane());
+            BorderPane.setAlignment(algoAsset.getVisualizationPane(), Pos.CENTER);
+            BorderPane.setMargin(algoAsset.getVisualizationPane(), new Insets(10));
 
             mainStackPane.getChildren().add(fourCornerOverlay);
         });
@@ -218,78 +221,22 @@ public class AlgoViewLauncherView
     private void hideSettings()
     {
         mainStackPane.getChildren().remove(settingsSeparator);
-        mainStackPane.getChildren().remove(settingPopOverBorderPane);
+        mainStackPane.getChildren().remove(algoSettingsPane);
     }
 
     private void showSettings()
     {
-        configureSeparator();
-
-        configureSettingPopoverPane();
-
-        mainStackPane.getChildren().add(2, settingsSeparator);
-        mainStackPane.getChildren().add(3, settingPopOverBorderPane);
-    }
-
-    private void configureSettingPopoverPane()
-    {
-        settingPopOverBorderPane = new BorderPane();
-
-        StackPane headerPane = new StackPane();
-        Label title = new Label(currentAlgoAsset.getTitle() + " Settings");
-        title.setStyle("-fx-font-size: 20");
-        title.setAlignment(Pos.CENTER);
-        title.setTextAlignment(TextAlignment.CENTER);
-
-        headerPane.getChildren().add(0, title);
-        StackPane.setAlignment(title, Pos.CENTER);
-        StackPane.setMargin(title, new Insets(20));
-
-        FontIcon xGraphic = new FontIcon(CarbonIcons.CLOSE);
-        xGraphic.setIconColor(Color.MINTCREAM);
-        xGraphic.setIconSize(30);
-        Button closeButton = new Button();
-        closeButton.getStyleClass().add("algoCloseButton");
-        closeButton.setGraphic(xGraphic);
-        closeButton.setOnAction(closeEvent -> hideSettings());
-        headerPane.getChildren().add(1, closeButton);
-        StackPane.setAlignment(closeButton, Pos.CENTER_RIGHT);
-        StackPane.setMargin(closeButton, new Insets(20));
-        settingPopOverBorderPane.setTop(headerPane);
-
-        double sceneHeight = mainStackPane.getScene().getHeight();
-        FxUtils.setStaticRegionSize(settingPopOverBorderPane, 500, (int) sceneHeight - 50);
-        settingPopOverBorderPane.getStyleClass().add("algoSettingsPanel");
-
-        VBox vBox = new VBox();
-        vBox.setAlignment(Pos.TOP_CENTER);
-        for (ComponentSettingGroup settingGroup : currentAlgoAsset.getSettings())
-        {
-            settingGroup.getRenderer().minWidthProperty().bind(vBox.widthProperty());
-            vBox.getChildren().add(settingGroup.getRenderer());
-        }
-
-        ScrollPane scrollPane = new ScrollPane(vBox);
-        scrollPane.setFitToWidth(true);
-        scrollPane.addEventFilter(ScrollEvent.SCROLL, event ->
-        {
-            if (event.getDeltaX() != 0)
-            {
-                event.consume();
-            }
-        });
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        vBox.minWidthProperty().bind(scrollPane.widthProperty().subtract(40));
-
-        settingPopOverBorderPane.setCenter(scrollPane);
-        BorderPane.setMargin(scrollPane, new Insets(0, 10, 10, 10));
+        mainStackPane.getChildren().add(settingsSeparator);
+        mainStackPane.getChildren().add(algoSettingsPane);
     }
 
     private void configureSeparator()
     {
-        settingsSeparator = new Rectangle(mainStackPane.getScene().getWidth(), mainStackPane.getScene().getHeight());
+        settingsSeparator = new Region();
+        settingsSeparator.prefWidthProperty().bind(mainStackPane.widthProperty());
+        settingsSeparator.prefHeightProperty().bind(mainStackPane.heightProperty());
         settingsSeparator.setOnMouseClicked(event -> hideSettings());
-        settingsSeparator.setFill(Color.WHITE);
+        settingsSeparator.setStyle("-fx-background-color: white");
         settingsSeparator.setOpacity(0.4f);
     }
 
