@@ -12,10 +12,10 @@ import java.util.Map;
 public class AlgoLauncherGridView extends GridPane
 {
     public static final int NUMBER_OF_COLUMNS = 3;
-    private final Map<String, AlgoView> algoViewMap;
+    private final Map<String, AlgoAsset> algoViewMap;
     private final AlgoViewLauncherView launcherView;
 
-    AlgoLauncherGridView(AlgoViewLauncherView launcherView, Map<String, AlgoView> algoViewMap)
+    AlgoLauncherGridView(AlgoViewLauncherView launcherView, Map<String, AlgoAsset> algoViewMap)
     {
         this.algoViewMap = algoViewMap;
         this.launcherView = launcherView;
@@ -30,7 +30,7 @@ public class AlgoLauncherGridView extends GridPane
     private void configureGridView()
     {
         int counter = 0;
-        for (AlgoView algoView : algoViewMap.values())
+        for (AlgoAsset algoView : algoViewMap.values())
         {
             LabeledTile labeledTile = new LabeledTile(algoView.getTitle());
             labeledTile.setOnMouseClicked(event -> launcherView.setAlgoView(algoView));

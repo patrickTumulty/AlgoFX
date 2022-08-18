@@ -29,10 +29,10 @@ public class AlgoViewLauncherView
 {
     private final AlgoLauncherGridView launcherGridView;
     private final StackPane mainStackPane;
-    private final Map<String, AlgoView> algoViewMap;
+    private final Map<String, AlgoAsset> algoAssetMap;
     private final FourCornerPane fourCornerOverlay;
     private final ChoiceComponent<String> algoModesComponent;
-    private AlgoView currentAlgoView;
+    private AlgoAsset currentAlgoAsset;
     private Button backButton;
     private Rectangle settingsSeparator;
     private BorderPane settingPopOverBorderPane;
@@ -46,11 +46,11 @@ public class AlgoViewLauncherView
     public AlgoViewLauncherView()
     {
         mainStackPane = new StackPane();
-        algoViewMap = new HashMap<>();
+        algoAssetMap = new HashMap<>();
 
         populateAlgoViewMap();
 
-        launcherGridView = new AlgoLauncherGridView(this, algoViewMap);
+        launcherGridView = new AlgoLauncherGridView(this, algoAssetMap);
 
         addGridView();
 
@@ -82,12 +82,12 @@ public class AlgoViewLauncherView
         backButton = new Button();
         backButton.setOnAction(event ->
         {
-            currentAlgoView.dispose();
+            currentAlgoAsset.dispose();
 
             FxUtils.run(() ->
             {
                 addGridView();
-                if (currentAlgoView.getAlgoModes().isPresent())
+                if (currentAlgoAsset.getAlgoModes().isPresent())
                 {
                     algoTitlePane.getChildren().remove(algoModesComponent.getRenderer());
                 }
@@ -106,7 +106,7 @@ public class AlgoViewLauncherView
 
     private void addGridView()
     {
-        if (currentAlgoView != null)
+        if (currentAlgoAsset != null)
         {
             mainStackPane.getChildren().remove(0);
         }
@@ -116,15 +116,15 @@ public class AlgoViewLauncherView
 
     private void populateAlgoViewMap()
     {
-        for (AlgoView algoView : Lookup.getDefault().lookupAll(AlgoView.class))
+        for (AlgoAsset algoView : Lookup.getDefault().lookupAll(AlgoAsset.class))
         {
-            algoViewMap.put(algoView.getTitle(), algoView);
+            algoAssetMap.put(algoView.getTitle(), algoView);
         }
     }
 
-    public void setAlgoView(AlgoView algoView)
+    public void setAlgoView(AlgoAsset algoView)
     {
-        setCurrentAlgoView(algoView);
+        setCurrentAlgoAsset(algoView);
 
         FxUtils.run(() ->
         {
@@ -144,7 +144,7 @@ public class AlgoViewLauncherView
         });
     }
 
-    private void configureAlgoModesIfPresent(AlgoView algoView)
+    private void configureAlgoModesIfPresent(AlgoAsset algoView)
     {
         if (algoView.getAlgoModes().isPresent())
         {
@@ -176,7 +176,7 @@ public class AlgoViewLauncherView
         algoResetButton.getStyleClass().add("algoReset");
         algoResetButton.getStyleClass().add("algoControl");
 
-        algoResetButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoReset()));
+        algoResetButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoAsset.doAlgoReset()));
     }
 
     private void configureAlgoSettingsButton()
@@ -204,15 +204,15 @@ public class AlgoViewLauncherView
             if (newValue)
             {
                 FxUtils.run(() -> algoActionButton.setText("Cancel"));
-                algoActionButton.setOnAction(event -> currentAlgoView.doAlgoCancel());
+                algoActionButton.setOnAction(event -> currentAlgoAsset.doAlgoCancel());
             }
             else
             {
-                FxUtils.run(() -> algoActionButton.setText(currentAlgoView.getAlgoActionName()));
-                algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
+                FxUtils.run(() -> algoActionButton.setText(currentAlgoAsset.getAlgoActionName()));
+                algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoAsset.doAlgoAction()));
             }
         };
-        algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoView.doAlgoAction()));
+        algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoAsset.doAlgoAction()));
     }
 
     private void hideSettings()
@@ -236,7 +236,7 @@ public class AlgoViewLauncherView
         settingPopOverBorderPane = new BorderPane();
 
         StackPane headerPane = new StackPane();
-        Label title = new Label(currentAlgoView.getTitle() + " Settings");
+        Label title = new Label(currentAlgoAsset.getTitle() + " Settings");
         title.setStyle("-fx-font-size: 20");
         title.setAlignment(Pos.CENTER);
         title.setTextAlignment(TextAlignment.CENTER);
@@ -263,7 +263,7 @@ public class AlgoViewLauncherView
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_CENTER);
-        for (ComponentSettingGroup settingGroup : currentAlgoView.getSettings())
+        for (ComponentSettingGroup settingGroup : currentAlgoAsset.getSettings())
         {
             settingGroup.getRenderer().minWidthProperty().bind(vBox.widthProperty());
             vBox.getChildren().add(settingGroup.getRenderer());
@@ -293,21 +293,21 @@ public class AlgoViewLauncherView
         settingsSeparator.setOpacity(0.4f);
     }
 
-    private void setCurrentAlgoView(AlgoView algoView)
+    private void setCurrentAlgoAsset(AlgoAsset algoView)
     {
-        if (currentAlgoView != null)
+        if (currentAlgoAsset != null)
         {
-            currentAlgoView.dispose();
-            currentAlgoView.busyProperty().removeListener(actionBusyListener);
+            currentAlgoAsset.dispose();
+            currentAlgoAsset.busyProperty().removeListener(actionBusyListener);
             algoResetButton.disableProperty().unbind();
         }
 
-        currentAlgoView = algoView;
+        currentAlgoAsset = algoView;
 
-        currentAlgoView.busyProperty().addListener(actionBusyListener);
-        algoResetButton.disableProperty().bind(currentAlgoView.busyProperty());
+        currentAlgoAsset.busyProperty().addListener(actionBusyListener);
+        algoResetButton.disableProperty().bind(currentAlgoAsset.busyProperty());
 
-        currentAlgoView.initView();
+        currentAlgoAsset.initView();
     }
 
     public Pane getView()

@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import java.util.List;
 import java.util.Optional;
 
-public interface AlgoView
+public interface AlgoAsset
 {
     String getTitle();
 

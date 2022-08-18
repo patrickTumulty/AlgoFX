@@ -1,6 +1,6 @@
 package com.ptumulty.AlgoFX.Sorting;
 
-import com.ptumulty.AlgoFX.AlgoView.AlgoView;
+import com.ptumulty.AlgoFX.AlgoView.AlgoAsset;
 import com.ptumulty.AlgoFX.ArrayGenerationMethod;
 import com.ptumulty.AlgoFX.Sorting.Sorter.ArraySorterController;
 import com.ptumulty.AlgoFX.Sorting.SorterView.ArrayAlignment;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SortingAlgoView implements AlgoView
+public class SortingAlgoAsset implements AlgoAsset
 {
     private ArraySorterController arraySorter;
 
@@ -30,7 +30,7 @@ public class SortingAlgoView implements AlgoView
     private StackPane visualizationPane;
     private final BooleanProperty busyProperty;
 
-    public SortingAlgoView()
+    public SortingAlgoAsset()
     {
         busyProperty = new SimpleBooleanProperty(false);
     }
