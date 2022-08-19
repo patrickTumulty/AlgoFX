@@ -1,4 +1,4 @@
-package com.ptumulty.AlgoFX.Sorting.Sorter.AlgoOperationsCounter;
+package com.ptumulty.AlgoFX.Capabilities;
 
 import com.ptumulty.ceramic.models.IntegerModel;
 

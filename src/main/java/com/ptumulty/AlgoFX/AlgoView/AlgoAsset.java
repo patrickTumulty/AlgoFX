@@ -1,5 +1,6 @@
 package com.ptumulty.AlgoFX.AlgoView;
 
+import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
 import com.ptumulty.ceramic.components.ComponentSettingGroup;
 import com.ptumulty.ceramic.models.ChoiceModel;
 import javafx.beans.property.BooleanProperty;
@@ -31,4 +32,6 @@ public interface AlgoAsset
     List<ComponentSettingGroup> getSettings();
 
     BooleanProperty busyProperty();
+
+    boolean matchesController(AlgoModelController controller);
 }

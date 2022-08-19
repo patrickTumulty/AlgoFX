@@ -1,5 +1,7 @@
 package com.ptumulty.AlgoFX.Sorting.Sorter;
 
+import com.ptumulty.AlgoFX.AlgoModel.AbstractAlgoModelController;
+import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
 import com.ptumulty.AlgoFX.ArrayGenerationMethod;
 import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
 import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModelImpl;
@@ -12,8 +14,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class ArraySorterController
+public class ArraySorterController extends AbstractAlgoModelController
 {
+    private final List<AlgoModelController.Listener> listeners;
     private final BoundIntegerModel arraySizeModel;
     private ChoiceModel<String> sortingAlgorithmChoiceModel;
     private ChoiceModel<ArrayGenerationMethod> arrayGenerationChoiceModel;
@@ -23,6 +26,7 @@ public class ArraySorterController
     public ArraySorterController()
     {
         arraySizeModel = new BoundIntegerModel(30, Optional.of(2), Optional.of(100));
+        listeners = new LinkedList<>();
 
         createArrayGenerationChoiceModel();
 
@@ -103,5 +107,23 @@ public class ArraySorterController
     public void sort()
     {
         currentSorter.sort(arrayModel);
+    }
+
+    @Override
+    public void dispose()
+    {
+
+    }
+
+    @Override
+    public void addListener(Listener listener)
+    {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(Listener listener)
+    {
+        listeners.remove(listener);
     }
 }

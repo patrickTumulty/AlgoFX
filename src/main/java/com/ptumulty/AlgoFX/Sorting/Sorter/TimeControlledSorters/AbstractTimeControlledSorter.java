@@ -1,7 +1,7 @@
 package com.ptumulty.AlgoFX.Sorting.Sorter.TimeControlledSorters;
 
-import com.ptumulty.AlgoFX.Sorting.Sorter.AlgoOperationsCounter.DefaultOperationsCounter;
-import com.ptumulty.AlgoFX.Sorting.Sorter.AlgoOperationsCounter.OperationsCounter;
+import com.ptumulty.AlgoFX.Capabilities.DefaultOperationsCounter;
+import com.ptumulty.AlgoFX.Capabilities.OperationsCounter;
 import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
 import com.ptumulty.ceramic.models.BoundIntegerModel;
 import com.ptumulty.ceramic.utility.ThreadUtils;

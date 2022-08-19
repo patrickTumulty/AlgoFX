@@ -1,5 +1,7 @@
 package com.ptumulty.AlgoFX.AlgoView;
 
+import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
+import com.ptumulty.AlgoFX.AlgoModel.AlgoModelManager;
 import com.ptumulty.ceramic.FourCornerPane;
 import com.ptumulty.ceramic.components.ChoiceComponent;
 import com.ptumulty.ceramic.utility.FxUtils;
@@ -20,7 +22,7 @@ import org.openide.util.Lookup;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AlgoViewLauncherView
+public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerListener
 {
     private final AlgoLauncherGridView launcherGridView;
     private final StackPane mainStackPane;
@@ -40,12 +42,14 @@ public class AlgoViewLauncherView
 
     public AlgoViewLauncherView()
     {
+        Lookup.getDefault().lookup(AlgoModelManager.class).addListener(this);
+
         mainStackPane = new StackPane();
         algoAssetMap = new HashMap<>();
 
         populateAlgoViewMap();
 
-        launcherGridView = new AlgoLauncherGridView(this, algoAssetMap);
+        launcherGridView = new AlgoLauncherGridView();
 
         addGridView();
 
@@ -80,20 +84,7 @@ public class AlgoViewLauncherView
     private void configureBackButton()
     {
         backButton = new Button();
-        backButton.setOnAction(event ->
-        {
-            currentAlgoAsset.dispose();
-
-            FxUtils.run(() ->
-            {
-                addGridView();
-                if (currentAlgoAsset.getAlgoModes().isPresent())
-                {
-                    algoTitlePane.getChildren().remove(algoModesComponent.getRenderer());
-                }
-                mainStackPane.getChildren().remove(fourCornerOverlay);
-            });
-        });
+        backButton.setOnAction(event -> Lookup.getDefault().lookup(AlgoModelManager.class).setAlgoModelController(null));
 
         backButton.setMinWidth(50);
         backButton.setMinHeight(50);
@@ -260,5 +251,35 @@ public class AlgoViewLauncherView
     public Pane getView()
     {
         return mainStackPane;
+    }
+
+    @Override
+    public void algoModelChanged(AlgoModelController newModel)
+    {
+        if (newModel == null)
+        {
+            currentAlgoAsset.dispose();
+
+            FxUtils.run(() ->
+            {
+                addGridView();
+                if (currentAlgoAsset.getAlgoModes().isPresent())
+                {
+                    algoTitlePane.getChildren().remove(algoModesComponent.getRenderer());
+                }
+                mainStackPane.getChildren().remove(fourCornerOverlay);
+            });
+        }
+        else
+        {
+            AlgoAsset algoAsset = AlgoAssetFactory.create(newModel);
+            if (algoAsset == null)
+            {
+                System.out.println("NULL");
+                return;
+            }
+
+            setAlgoView(algoAsset);
+        }
     }
 }

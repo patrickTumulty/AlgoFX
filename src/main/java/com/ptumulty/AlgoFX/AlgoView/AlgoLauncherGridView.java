@@ -1,25 +1,21 @@
 package com.ptumulty.AlgoFX.AlgoView;
 
+import com.ptumulty.AlgoFX.AlgoModel.AlgoModelControllerFactory;
+import com.ptumulty.AlgoFX.AlgoModel.AlgoModelManager;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.TextAlignment;
-
-import java.util.Map;
+import org.openide.util.Lookup;
 
 public class AlgoLauncherGridView extends GridPane
 {
     public static final int NUMBER_OF_COLUMNS = 3;
-    private final Map<String, AlgoAsset> algoViewMap;
-    private final AlgoViewLauncherView launcherView;
 
-    AlgoLauncherGridView(AlgoViewLauncherView launcherView, Map<String, AlgoAsset> algoViewMap)
+    AlgoLauncherGridView()
     {
-        this.algoViewMap = algoViewMap;
-        this.launcherView = launcherView;
-
         setAlignment(Pos.CENTER);
         setHgap(30);
         setVgap(30);
@@ -30,10 +26,13 @@ public class AlgoLauncherGridView extends GridPane
     private void configureGridView()
     {
         int counter = 0;
-        for (AlgoAsset algoView : algoViewMap.values())
+        for (AlgoAsset algoAsset : Lookup.getDefault().lookupAll(AlgoAsset.class))
         {
-            LabeledTile labeledTile = new LabeledTile(algoView.getTitle());
-            labeledTile.setOnMouseClicked(event -> launcherView.setAlgoView(algoView));
+            LabeledTile labeledTile = new LabeledTile(algoAsset.getTitle());
+            labeledTile.setOnMouseClicked(event ->
+                    Lookup.getDefault()
+                          .lookup(AlgoModelManager.class)
+                          .setAlgoModelController(AlgoModelControllerFactory.create(algoAsset)));
             add(labeledTile, counter % NUMBER_OF_COLUMNS, counter / NUMBER_OF_COLUMNS);
             counter++;
         }

@@ -1,5 +1,6 @@
 package com.ptumulty.AlgoFX.Sorting;
 
+import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
 import com.ptumulty.AlgoFX.AlgoView.AlgoAsset;
 import com.ptumulty.AlgoFX.ArrayGenerationMethod;
 import com.ptumulty.AlgoFX.Sorting.Sorter.ArraySorterController;
@@ -44,7 +45,6 @@ public class SortingAlgoAsset implements AlgoAsset
     @Override
     public void initView()
     {
-
         arraySorter = new ArraySorterController();
         sortingSettings = new ArrayList<>();
         visualizationPane = new StackPane();
@@ -177,5 +177,11 @@ public class SortingAlgoAsset implements AlgoAsset
     public BooleanProperty busyProperty()
     {
         return busyProperty;
+    }
+
+    @Override
+    public boolean matchesController(AlgoModelController controller)
+    {
+        return controller instanceof ArraySorterController;
     }
 }
