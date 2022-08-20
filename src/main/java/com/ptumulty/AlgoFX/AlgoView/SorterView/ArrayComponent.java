@@ -1,6 +1,6 @@
-package com.ptumulty.AlgoFX.Sorting.SorterView;
+package com.ptumulty.AlgoFX.AlgoView.SorterView;
 
-import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
+import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArrayModel.ArrayModel;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,7 +11,6 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
 {

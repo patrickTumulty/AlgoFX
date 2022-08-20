@@ -103,9 +103,9 @@ public class AlgoSettingsPane extends BorderPane
         StackPane.setMargin(title, new Insets(20));
     }
 
-    public void attachAlgoAsset(AlgoAsset algoAsset)
+    public void attachAlgoAsset(AlgoModelView algoModelView)
     {
-        for (ComponentSettingGroup settingGroup : algoAsset.getSettings())
+        for (ComponentSettingGroup settingGroup : algoModelView.getSettings())
         {
             settingGroup.getRenderer().minWidthProperty().bind(settingsVBox.widthProperty());
             settingsVBox.getChildren().add(settingGroup.getRenderer());

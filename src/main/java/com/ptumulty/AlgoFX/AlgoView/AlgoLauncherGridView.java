@@ -1,6 +1,6 @@
 package com.ptumulty.AlgoFX.AlgoView;
 
-import com.ptumulty.AlgoFX.AlgoModel.AlgoModelControllerFactory;
+import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
 import com.ptumulty.AlgoFX.AlgoModel.AlgoModelManager;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Pos;
@@ -26,13 +26,13 @@ public class AlgoLauncherGridView extends GridPane
     private void configureGridView()
     {
         int counter = 0;
-        for (AlgoAsset algoAsset : Lookup.getDefault().lookupAll(AlgoAsset.class))
+        for (AlgoModelController algoModelController : Lookup.getDefault().lookupAll(AlgoModelController.class))
         {
-            LabeledTile labeledTile = new LabeledTile(algoAsset.getTitle());
+            LabeledTile labeledTile = new LabeledTile(algoModelController.getTitle());
             labeledTile.setOnMouseClicked(event ->
                     Lookup.getDefault()
                           .lookup(AlgoModelManager.class)
-                          .setAlgoModelController(AlgoModelControllerFactory.create(algoAsset)));
+                          .setAlgoModelController(algoModelController));
             add(labeledTile, counter % NUMBER_OF_COLUMNS, counter / NUMBER_OF_COLUMNS);
             counter++;
         }

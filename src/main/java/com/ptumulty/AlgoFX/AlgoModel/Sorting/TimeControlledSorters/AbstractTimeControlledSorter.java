@@ -1,8 +1,8 @@
-package com.ptumulty.AlgoFX.Sorting.Sorter.TimeControlledSorters;
+package com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters;
 
 import com.ptumulty.AlgoFX.Capabilities.DefaultOperationsCounter;
 import com.ptumulty.AlgoFX.Capabilities.OperationsCounter;
-import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
+import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArrayModel.ArrayModel;
 import com.ptumulty.ceramic.models.BoundIntegerModel;
 import com.ptumulty.ceramic.utility.ThreadUtils;
 
@@ -33,6 +33,12 @@ public abstract class AbstractTimeControlledSorter implements TimeControlledSort
     public BoundIntegerModel getTimeStepIntegerModel()
     {
         return timeStepIntegerModel;
+    }
+
+    @Override
+    public OperationsCounter getOperationsCounter()
+    {
+        return oc;
     }
 
     protected void doCancelableDelay() throws CancelSortException

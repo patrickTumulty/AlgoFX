@@ -4,6 +4,8 @@ import org.openide.util.Lookup;
 
 public interface AlgoModelController extends Broadcaster<AlgoModelController.Listener>
 {
+    String getTitle();
+
     Lookup getCapabilities();
 
     void dispose();

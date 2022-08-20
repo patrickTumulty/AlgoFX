@@ -1,0 +1,5 @@
+com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters.BubbleTimeControlledSorter
+
+com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters.SelectionTimeControlledSorter
+
+com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters.InsertionTimeControlledSorter

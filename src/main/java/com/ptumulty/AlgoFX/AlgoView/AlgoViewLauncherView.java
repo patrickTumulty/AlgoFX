@@ -2,8 +2,11 @@ package com.ptumulty.AlgoFX.AlgoView;
 
 import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
 import com.ptumulty.AlgoFX.AlgoModel.AlgoModelManager;
+import com.ptumulty.AlgoFX.Capabilities.AlgoCapability;
+import com.ptumulty.AlgoFX.CapabilitiesUI.AlgoCapabilityUIProvider;
 import com.ptumulty.ceramic.FourCornerPane;
 import com.ptumulty.ceramic.components.ChoiceComponent;
+import com.ptumulty.ceramic.utility.ButtonUtils;
 import com.ptumulty.ceramic.utility.FxUtils;
 import com.ptumulty.ceramic.utility.ThreadUtils;
 import javafx.beans.value.ChangeListener;
@@ -19,18 +22,15 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.openide.util.Lookup;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerListener
 {
     private final AlgoLauncherGridView launcherGridView;
     private final StackPane mainStackPane;
-    private final Map<String, AlgoAsset> algoAssetMap;
     private final FourCornerPane fourCornerOverlay;
     private final ChoiceComponent<String> algoModesComponent;
     private final AlgoSettingsPane algoSettingsPane;
-    private AlgoAsset currentAlgoAsset;
+    private final AlgoModelManager algoModelManager;
+    private AlgoModelView currentAlgoModelView;
     private Button backButton;
     private Region settingsSeparator;
     private VBox algoTitlePane;
@@ -42,13 +42,10 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
 
     public AlgoViewLauncherView()
     {
-        Lookup.getDefault().lookup(AlgoModelManager.class).addListener(this);
+        algoModelManager = Lookup.getDefault().lookup(AlgoModelManager.class);
+        algoModelManager.addListener(this);
 
         mainStackPane = new StackPane();
-        algoAssetMap = new HashMap<>();
-
-        populateAlgoViewMap();
-
         launcherGridView = new AlgoLauncherGridView();
 
         addGridView();
@@ -97,7 +94,7 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
 
     private void addGridView()
     {
-        if (currentAlgoAsset != null)
+        if (currentAlgoModelView != null)
         {
             mainStackPane.getChildren().remove(0);
         }
@@ -105,40 +102,51 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
         StackPane.setAlignment(launcherGridView, Pos.CENTER);
     }
 
-    private void populateAlgoViewMap()
+    public void setAlgoView(AlgoModelView algoModelView)
     {
-        for (AlgoAsset algoView : Lookup.getDefault().lookupAll(AlgoAsset.class))
-        {
-            algoAssetMap.put(algoView.getTitle(), algoView);
-        }
-    }
-
-    public void setAlgoView(AlgoAsset algoAsset)
-    {
-        setCurrentAlgoAsset(algoAsset);
+        setCurrentAlgoAsset(algoModelView);
 
         FxUtils.run(() ->
         {
             mainStackPane.getChildren().remove(launcherGridView);
 
-            algoActionButton.setText(algoAsset.getAlgoActionName());
+            algoActionButton.setText(algoModelView.getAlgoActionName());
 
-            algoViewLabel.setText(algoAsset.getTitle());
+            algoViewLabel.setText(algoModelView.getTitle());
 
             algoSettingsPane.dispose();
-            algoSettingsPane.attachAlgoAsset(algoAsset);
+            algoSettingsPane.attachAlgoAsset(algoModelView);
 
-            configureAlgoModesIfPresent(algoAsset);
+            configureAlgoModesIfPresent(algoModelView);
 
-            fourCornerOverlay.setCenter(algoAsset.getVisualizationPane());
-            BorderPane.setAlignment(algoAsset.getVisualizationPane(), Pos.CENTER);
-            BorderPane.setMargin(algoAsset.getVisualizationPane(), new Insets(10));
+            fourCornerOverlay.setCenter(algoModelView.getVisualizationPane());
+            BorderPane.setAlignment(algoModelView.getVisualizationPane(), Pos.CENTER);
+            BorderPane.setMargin(algoModelView.getVisualizationPane(), new Insets(10));
 
             mainStackPane.getChildren().add(fourCornerOverlay);
+
+            addCapabilities();
         });
     }
 
-    private void configureAlgoModesIfPresent(AlgoAsset algoView)
+    private void addCapabilities()
+    {
+        for (AlgoCapability capability : algoModelManager.getCurrentAlgoModel().getCapabilities().lookupAll(AlgoCapability.class))
+        {
+            for (AlgoCapabilityUIProvider uiProvider : Lookup.getDefault().lookupAll(AlgoCapabilityUIProvider.class))
+            {
+                if (uiProvider.matchesCapable(capability))
+                {
+                    FontIcon icon = uiProvider.getIcon();
+                    icon.setIconColor(Color.MINTCREAM);
+                    Button button = ButtonUtils.createCircleIconButton(icon, 40);
+                    fourCornerOverlay.getBottomRight().getChildren().add(button);
+                }
+            }
+        }
+    }
+
+    private void configureAlgoModesIfPresent(AlgoModelView algoView)
     {
         if (algoView.getAlgoModes().isPresent())
         {
@@ -170,7 +178,7 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
         algoResetButton.getStyleClass().add("algoReset");
         algoResetButton.getStyleClass().add("algoControl");
 
-        algoResetButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoAsset.doAlgoReset()));
+        algoResetButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoModelView.doAlgoReset()));
     }
 
     private void configureAlgoSettingsButton()
@@ -198,15 +206,15 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
             if (newValue)
             {
                 FxUtils.run(() -> algoActionButton.setText("Cancel"));
-                algoActionButton.setOnAction(event -> currentAlgoAsset.doAlgoCancel());
+                algoActionButton.setOnAction(event -> currentAlgoModelView.doAlgoCancel());
             }
             else
             {
-                FxUtils.run(() -> algoActionButton.setText(currentAlgoAsset.getAlgoActionName()));
-                algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoAsset.doAlgoAction()));
+                FxUtils.run(() -> algoActionButton.setText(currentAlgoModelView.getAlgoActionName()));
+                algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoModelView.doAlgoAction()));
             }
         };
-        algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoAsset.doAlgoAction()));
+        algoActionButton.setOnAction(event -> ThreadUtils.run(() -> currentAlgoModelView.doAlgoAction()));
     }
 
     private void hideSettings()
@@ -231,21 +239,19 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
         settingsSeparator.setOpacity(0.4f);
     }
 
-    private void setCurrentAlgoAsset(AlgoAsset algoView)
+    private void setCurrentAlgoAsset(AlgoModelView algoView)
     {
-        if (currentAlgoAsset != null)
+        if (currentAlgoModelView != null)
         {
-            currentAlgoAsset.dispose();
-            currentAlgoAsset.busyProperty().removeListener(actionBusyListener);
+            currentAlgoModelView.dispose();
+            currentAlgoModelView.busyProperty().removeListener(actionBusyListener);
             algoResetButton.disableProperty().unbind();
         }
 
-        currentAlgoAsset = algoView;
+        currentAlgoModelView = algoView;
 
-        currentAlgoAsset.busyProperty().addListener(actionBusyListener);
-        algoResetButton.disableProperty().bind(currentAlgoAsset.busyProperty());
-
-        currentAlgoAsset.initView();
+        currentAlgoModelView.busyProperty().addListener(actionBusyListener);
+        algoResetButton.disableProperty().bind(currentAlgoModelView.busyProperty());
     }
 
     public Pane getView()
@@ -258,12 +264,12 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
     {
         if (newModel == null)
         {
-            currentAlgoAsset.dispose();
+            currentAlgoModelView.dispose();
 
             FxUtils.run(() ->
             {
                 addGridView();
-                if (currentAlgoAsset.getAlgoModes().isPresent())
+                if (currentAlgoModelView.getAlgoModes().isPresent())
                 {
                     algoTitlePane.getChildren().remove(algoModesComponent.getRenderer());
                 }
@@ -272,14 +278,13 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
         }
         else
         {
-            AlgoAsset algoAsset = AlgoAssetFactory.create(newModel);
-            if (algoAsset == null)
+            for (AlgoModelViewProvider provider : Lookup.getDefault().lookupAll(AlgoModelViewProvider.class))
             {
-                System.out.println("NULL");
-                return;
+                if (provider.getCompatibleType() == newModel.getClass())
+                {
+                    setAlgoView(provider.createView(newModel));
+                }
             }
-
-            setAlgoView(algoAsset);
         }
     }
 }

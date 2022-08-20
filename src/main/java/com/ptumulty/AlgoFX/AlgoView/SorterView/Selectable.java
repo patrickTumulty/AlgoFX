@@ -1,4 +1,4 @@
-package com.ptumulty.AlgoFX.Sorting.SorterView;
+package com.ptumulty.AlgoFX.AlgoView.SorterView;
 
 import javafx.beans.property.BooleanProperty;
 

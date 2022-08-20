@@ -9,11 +9,9 @@ import javafx.scene.layout.Pane;
 import java.util.List;
 import java.util.Optional;
 
-public interface AlgoAsset
+public interface AlgoModelView
 {
     String getTitle();
-
-    void initView();
 
     void dispose();
 

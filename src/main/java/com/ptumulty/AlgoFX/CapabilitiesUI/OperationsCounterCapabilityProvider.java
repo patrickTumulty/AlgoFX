@@ -6,10 +6,8 @@ import javafx.scene.layout.Pane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class OperationsCounterCapabilityProvider implements AlgoUICapabilityProvider<OperationsCounter>
+public class OperationsCounterCapabilityProvider implements AlgoCapabilityUIProvider<OperationsCounter>
 {
-    private OperationsCounterView operationsCounterView;
-
     @Override
     public boolean matchesCapable(AlgoCapability capability)
     {
@@ -17,15 +15,9 @@ public class OperationsCounterCapabilityProvider implements AlgoUICapabilityProv
     }
 
     @Override
-    public void initUI(OperationsCounter capable)
+    public Pane createCapabilityView(OperationsCounter capability)
     {
-        operationsCounterView = new OperationsCounterView(capable);
-    }
-
-    @Override
-    public Pane getView()
-    {
-        return operationsCounterView;
+        return new OperationsCounterView(capability);
     }
 
     @Override

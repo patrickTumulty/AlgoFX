@@ -1,11 +1,9 @@
-package com.ptumulty.AlgoFX.Sorting;
+package com.ptumulty.AlgoFX.AlgoView.SorterView;
 
 import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
-import com.ptumulty.AlgoFX.AlgoView.AlgoAsset;
+import com.ptumulty.AlgoFX.AlgoView.AlgoModelView;
 import com.ptumulty.AlgoFX.ArrayGenerationMethod;
-import com.ptumulty.AlgoFX.Sorting.Sorter.ArraySorterController;
-import com.ptumulty.AlgoFX.Sorting.SorterView.ArrayAlignment;
-import com.ptumulty.AlgoFX.Sorting.SorterView.ArrayComponent;
+import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArraySorterController;
 import com.ptumulty.ceramic.components.*;
 import com.ptumulty.ceramic.models.ChoiceModel;
 import com.ptumulty.ceramic.utility.FxUtils;
@@ -21,37 +19,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SortingAlgoAsset implements AlgoAsset
+public class SortingAlgoModelView implements AlgoModelView
 {
-    private ArraySorterController arraySorter;
-
-    private List<ComponentSettingGroup> sortingSettings;
+    private final ArraySorterController arraySorter;
+    private final List<ComponentSettingGroup> sortingSettings;
+    private final StackPane visualizationPane;
+    private final BooleanProperty busyProperty;
     private ArrayComponent<Integer> arrayComponent;
     private ChoiceModel<ArrayAlignment> alignmentChoiceModel;
-    private StackPane visualizationPane;
-    private final BooleanProperty busyProperty;
 
-    public SortingAlgoAsset()
+    public SortingAlgoModelView(ArraySorterController arraySortController)
     {
+        arraySorter = arraySortController;
         busyProperty = new SimpleBooleanProperty(false);
-    }
-    
-    @Override
-    public String getTitle()
-    {
-        return "Sorting";
-    }
 
-    @Override
-    public void initView()
-    {
-        arraySorter = new ArraySorterController();
         sortingSettings = new ArrayList<>();
         visualizationPane = new StackPane();
 
         configureSortingSettings();
 
         generateNewArray();
+    }
+    
+    @Override
+    public String getTitle()
+    {
+        return "Sorting";
     }
 
     private void generateNewArray()

@@ -1,6 +1,6 @@
-package com.ptumulty.AlgoFX.Sorting.Sorter.TimeControlledSorters;
+package com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters;
 
-import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
+import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArrayModel.ArrayModel;
 
 public class BubbleTimeControlledSorter extends AbstractTimeControlledSorter
 {

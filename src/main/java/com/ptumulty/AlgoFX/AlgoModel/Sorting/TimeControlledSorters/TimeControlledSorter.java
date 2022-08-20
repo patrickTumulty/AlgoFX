@@ -1,6 +1,7 @@
-package com.ptumulty.AlgoFX.Sorting.Sorter.TimeControlledSorters;
+package com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters;
 
-import com.ptumulty.AlgoFX.Sorting.Sorter.ArrayModel.ArrayModel;
+import com.ptumulty.AlgoFX.Capabilities.OperationsCounter;
+import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArrayModel.ArrayModel;
 import com.ptumulty.ceramic.models.BoundIntegerModel;
 import org.openide.util.Lookup;
 
@@ -9,6 +10,8 @@ public interface TimeControlledSorter
     String getSorterName();
 
     BoundIntegerModel getTimeStepIntegerModel();
+
+    OperationsCounter getOperationsCounter();
 
     void sort(ArrayModel<Integer> arrayModel);
 
