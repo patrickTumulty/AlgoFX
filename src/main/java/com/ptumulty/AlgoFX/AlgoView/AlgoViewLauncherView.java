@@ -269,11 +269,14 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
             FxUtils.run(() ->
             {
                 addGridView();
+
                 if (currentAlgoModelView.getAlgoModes().isPresent())
                 {
                     algoTitlePane.getChildren().remove(algoModesComponent.getRenderer());
                 }
                 mainStackPane.getChildren().remove(fourCornerOverlay);
+
+                clearCapabilitiesButtons();
             });
         }
         else
@@ -286,5 +289,10 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
                 }
             }
         }
+    }
+
+    private void clearCapabilitiesButtons()
+    {
+        fourCornerOverlay.getBottomRight().getChildren().clear();
     }
 }
