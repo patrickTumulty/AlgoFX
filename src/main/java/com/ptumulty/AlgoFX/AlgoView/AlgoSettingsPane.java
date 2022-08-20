@@ -45,8 +45,6 @@ public class AlgoSettingsPane extends BorderPane
         settingsVBox.setAlignment(Pos.TOP_CENTER);
 
         configureScrollPane();
-
-        addListener(this::dispose);
     }
 
     private void configureSettingPaneSize()
