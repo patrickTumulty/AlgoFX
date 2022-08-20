@@ -27,6 +27,7 @@ public class OperationsCounterView extends StackPane
         dataSetSizeLabel.setLabel("Data Set Size");
 
         componentSettingGroup = new ComponentSettingGroup("Operations Counter", List.of(operationsCountLabel, dataSetSizeLabel));
+        componentSettingGroup.showTitle(false);
         getChildren().add(componentSettingGroup.getRenderer());
         StackPane.setAlignment(componentSettingGroup.getRenderer(), Pos.CENTER);
         StackPane.setMargin(componentSettingGroup.getRenderer(), new Insets(10));

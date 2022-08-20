@@ -10,10 +10,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import org.kordamp.ikonli.carbonicons.CarbonIcons;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,12 +74,7 @@ public class AlgoSettingsPane extends BorderPane
 
     private void configureCloseButton()
     {
-        FontIcon xGraphic = new FontIcon(CarbonIcons.CLOSE);
-        xGraphic.setIconColor(Color.MINTCREAM);
-        xGraphic.setIconSize(30);
-        Button closeButton = new Button();
-        closeButton.getStyleClass().add("algoCloseButton");
-        closeButton.setGraphic(xGraphic);
+        Button closeButton = AlgoButtonUtils.createCloseButton(30);
         closeButton.setOnAction(closeEvent -> listeners.forEach(CloseListener::close));
         headerPane.getChildren().add(1, closeButton);
         StackPane.setAlignment(closeButton, Pos.CENTER_RIGHT);

@@ -25,4 +25,10 @@ public class OperationsCounterCapabilityProvider implements AlgoCapabilityUIProv
     {
         return new FontIcon(FontAwesomeSolid.CHART_LINE);
     }
+
+    @Override
+    public String getTitle()
+    {
+        return "Operations Counter";
+    }
 }

@@ -11,4 +11,6 @@ public interface AlgoCapabilityUIProvider<T extends AlgoCapability>
     Pane createCapabilityView(T capability);
 
     FontIcon getIcon();
+
+    String getTitle();
 }

@@ -4,6 +4,7 @@ import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
 import com.ptumulty.AlgoFX.AlgoModel.AlgoModelManager;
 import com.ptumulty.AlgoFX.Capabilities.AlgoCapability;
 import com.ptumulty.AlgoFX.CapabilitiesUI.AlgoCapabilityUIProvider;
+import com.ptumulty.ceramic.DragPane;
 import com.ptumulty.ceramic.FourCornerPane;
 import com.ptumulty.ceramic.components.ChoiceComponent;
 import com.ptumulty.ceramic.utility.ButtonUtils;
@@ -12,6 +13,7 @@ import com.ptumulty.ceramic.utility.ThreadUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -21,6 +23,9 @@ import javafx.scene.text.TextAlignment;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.openide.util.Lookup;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerListener
 {
@@ -39,6 +44,7 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
     private Button algoActionButton;
     private ChangeListener<Boolean> actionBusyListener;
     private Label algoViewLabel;
+    private List<Node> capabilitiesNodes;
 
     public AlgoViewLauncherView()
     {
@@ -47,6 +53,7 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
 
         mainStackPane = new StackPane();
         launcherGridView = new AlgoLauncherGridView();
+        capabilitiesNodes = new LinkedList<>();
 
         addGridView();
 
@@ -140,6 +147,14 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
                     FontIcon icon = uiProvider.getIcon();
                     icon.setIconColor(Color.MINTCREAM);
                     Button button = ButtonUtils.createCircleIconButton(icon, 40);
+                    button.setOnAction(event ->
+                    {
+                        CloseableDragPane dragPane = new CloseableDragPane(uiProvider.getTitle(), mainStackPane);
+                        dragPane.getStyleClass().add("sleek-pane");
+                        dragPane.setContent(uiProvider.createCapabilityView(capability));
+                        mainStackPane.getChildren().add(dragPane);
+                        capabilitiesNodes.add(dragPane);
+                    });
                     fourCornerOverlay.getBottomRight().getChildren().add(button);
                 }
             }
@@ -277,6 +292,9 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
                 mainStackPane.getChildren().remove(fourCornerOverlay);
 
                 clearCapabilitiesButtons();
+
+                capabilitiesNodes.forEach(node -> mainStackPane.getChildren().remove(node));
+                capabilitiesNodes.clear();
             });
         }
         else
@@ -294,5 +312,52 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
     private void clearCapabilitiesButtons()
     {
         fourCornerOverlay.getBottomRight().getChildren().clear();
+    }
+
+    private class CloseableDragPane extends DragPane
+    {
+
+        private final FourCornerPane fourCornerPane;
+
+        /**
+         * Constructor
+         *
+         * @param title pane title
+         * @param parent parent node that this DragPane is placed within
+         */
+        public CloseableDragPane(String title, Pane parent)
+        {
+            super(parent);
+
+            setMaxSize(280, 150);
+
+            fourCornerPane = new FourCornerPane();
+            fourCornerPane.setBindTopContainerWidths(false);
+            fourCornerPane.setInsets(10);
+            getChildren().add(fourCornerPane);
+            fourCornerPane.minWidthProperty().bind(widthProperty());
+            fourCornerPane.minHeightProperty().bind(heightProperty());
+
+            Label titleLabel = new Label(title);
+            titleLabel.setStyle("-fx-font-size: larger");
+            titleLabel.setMinWidth(140);
+            fourCornerPane.getTopLeft().getChildren().add(titleLabel);
+
+            Button closeButton = AlgoButtonUtils.createCloseButton(23);
+            closeButton.setOnAction(event -> mainStackPane.getChildren().remove(this));
+            fourCornerPane.getTopRight().getChildren().add(closeButton);
+
+            Label ellipses = new Label();
+            FontIcon ellipsesFontIcon = new FontIcon(FontAwesomeSolid.ELLIPSIS_H);
+            ellipsesFontIcon.setIconColor(Color.MINTCREAM);
+            ellipsesFontIcon.setIconSize(14);
+            ellipses.setGraphic(ellipsesFontIcon);
+            fourCornerPane.setBottomNode(ellipses);
+        }
+
+        public void setContent(Node node)
+        {
+            fourCornerPane.setCenter(node);
+        }
     }
 }
