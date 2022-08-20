@@ -6,6 +6,8 @@ import com.ptumulty.AlgoFX.ArrayGenerationMethod;
 import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArrayModel.ArrayModel;
 import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArrayModel.ArrayModelImpl;
 import com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters.TimeControlledSorter;
+import com.ptumulty.AlgoFX.Capabilities.DefaultOperationsCounter;
+import com.ptumulty.AlgoFX.Capabilities.OperationsCounter;
 import com.ptumulty.ceramic.models.BoundIntegerModel;
 import com.ptumulty.ceramic.models.ChoiceModel;
 import org.openide.util.Lookup;
@@ -22,6 +24,7 @@ public class ArraySorterController extends AbstractAlgoModelController
     private ChoiceModel<ArrayGenerationMethod> arrayGenerationChoiceModel;
     private ArrayModel<Integer> arrayModel;
     private TimeControlledSorter currentSorter;
+    private final OperationsCounter operationsCounter;
 
     public ArraySorterController()
     {
@@ -32,7 +35,9 @@ public class ArraySorterController extends AbstractAlgoModelController
 
         createSortingAlgorithmChoiceModel();
 
-        lookupContent.add(currentSorter.getOperationsCounter());
+        operationsCounter = new DefaultOperationsCounter();
+
+        lookupContent.add(operationsCounter);
     }
 
     private void createArrayGenerationChoiceModel()
@@ -108,7 +113,7 @@ public class ArraySorterController extends AbstractAlgoModelController
 
     public void sort()
     {
-        currentSorter.sort(arrayModel);
+        currentSorter.sort(arrayModel, operationsCounter);
     }
 
     @Override

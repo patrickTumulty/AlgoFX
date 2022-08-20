@@ -11,14 +11,13 @@ import java.util.Optional;
 public abstract class AbstractTimeControlledSorter implements TimeControlledSorter
 {
     protected final BoundIntegerModel timeStepIntegerModel;
-    protected final OperationsCounter oc;
+    protected OperationsCounter oc;
 
     protected boolean sortCancelRequested;
 
     AbstractTimeControlledSorter()
     {
         timeStepIntegerModel = new BoundIntegerModel(15, Optional.of(0), Optional.of(500));
-        oc = new DefaultOperationsCounter();
 
         sortCancelRequested = false;
     }
@@ -51,9 +50,10 @@ public abstract class AbstractTimeControlledSorter implements TimeControlledSort
         }
     }
 
-    public void sort(ArrayModel<Integer> arrayModel)
+    public void sort(ArrayModel<Integer> arrayModel, OperationsCounter operationsCounter)
     {
         sortCancelRequested = false;
+        oc = operationsCounter;
         oc.resetCounter();
         oc.getDataSetSizeModel().setValue(arrayModel.size());
 

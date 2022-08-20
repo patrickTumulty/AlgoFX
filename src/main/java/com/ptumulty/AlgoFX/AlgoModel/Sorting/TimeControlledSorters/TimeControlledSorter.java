@@ -13,7 +13,7 @@ public interface TimeControlledSorter
 
     OperationsCounter getOperationsCounter();
 
-    void sort(ArrayModel<Integer> arrayModel);
+    void sort(ArrayModel<Integer> arrayModel, OperationsCounter operationsCounter);
 
     void cancelSortInProgress();
 

@@ -329,7 +329,7 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
         {
             super(parent);
 
-            setMaxSize(280, 150);
+            setMaxSize(280, 120);
 
             fourCornerPane = new FourCornerPane();
             fourCornerPane.setBindTopContainerWidths(false);
@@ -349,7 +349,7 @@ public class AlgoViewLauncherView implements AlgoModelManager.AlgoModelManagerLi
 
             Label ellipses = new Label();
             FontIcon ellipsesFontIcon = new FontIcon(FontAwesomeSolid.ELLIPSIS_H);
-            ellipsesFontIcon.setIconColor(Color.MINTCREAM);
+            ellipsesFontIcon.setIconColor(Color.DARKGRAY);
             ellipsesFontIcon.setIconSize(14);
             ellipses.setGraphic(ellipsesFontIcon);
             fourCornerPane.setBottomNode(ellipses);

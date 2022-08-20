@@ -20,22 +20,28 @@ public class OperationsCounterView extends StackPane
     OperationsCounterView(OperationsCounter operationsCounter)
     {
         this.operationsCounter = operationsCounter;
+        LabelComponent.ValueToStringConverter intCommaConverter = value ->
+        {
+            if (value instanceof Integer)
+            {
+                return String.format("%,d", value);
+            }
+            return value.toString();
+        };
 
         operationsCountLabel = new LabelComponent(this.operationsCounter.getOperationsCountModel());
+        operationsCountLabel.setValueStringConverter(intCommaConverter);
         operationsCountLabel.setLabel("Operations");
+
+        operationsCountLabel.setValueStringConverter(intCommaConverter);
         dataSetSizeLabel = new LabelComponent(this.operationsCounter.getDataSetSizeModel());
+        dataSetSizeLabel.setValueStringConverter(intCommaConverter);
         dataSetSizeLabel.setLabel("Data Set Size");
 
         componentSettingGroup = new ComponentSettingGroup("Operations Counter", List.of(operationsCountLabel, dataSetSizeLabel));
         componentSettingGroup.showTitle(false);
         getChildren().add(componentSettingGroup.getRenderer());
         StackPane.setAlignment(componentSettingGroup.getRenderer(), Pos.CENTER);
-        StackPane.setMargin(componentSettingGroup.getRenderer(), new Insets(10));
-    }
-
-    public void dispose()
-    {
-        operationsCountLabel.detachModel();
-        dataSetSizeLabel.detachModel();
+        StackPane.setMargin(componentSettingGroup.getRenderer(), new Insets(0, 10, 0, 10));
     }
 }

@@ -20,6 +20,7 @@ public class BubbleTimeControlledSorter extends AbstractTimeControlledSorter
             {
                 if (oc.countConditional(arrayModel.get(j - 1) > arrayModel.get(j)))
                 {
+                    oc.incrementCounter();
                     arrayModel.swap(j - 1, j);
                 }
             }
