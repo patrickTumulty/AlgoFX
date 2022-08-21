@@ -67,7 +67,7 @@ public abstract class AbstractTimeControlledSorter implements TimeControlledSort
         }
     }
 
-    abstract void doSort(ArrayModel<Integer> arrayModel) throws CancelSortException;
+    abstract protected void doSort(ArrayModel<Integer> arrayModel) throws CancelSortException;
 
     protected class CancelSortException extends Exception
     {

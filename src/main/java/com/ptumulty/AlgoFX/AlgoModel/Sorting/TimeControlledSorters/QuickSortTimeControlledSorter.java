@@ -5,7 +5,7 @@ import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArrayModel.ArrayModel;
 public class QuickSortTimeControlledSorter extends AbstractTimeControlledSorter
 {
     @Override
-    void doSort(ArrayModel<Integer> arrayModel) throws CancelSortException
+    protected void doSort(ArrayModel<Integer> arrayModel) throws CancelSortException
     {
         quickSort(arrayModel, 0, arrayModel.size() - 1);
     }
@@ -32,7 +32,7 @@ public class QuickSortTimeControlledSorter extends AbstractTimeControlledSorter
 
         int i = (low - 1);
 
-        for(int j = low; oc.countConditional(j <= high - 1); j++, doCancelableDelay())
+        for (int j = low; oc.countConditional(j <= high - 1); j++, doCancelableDelay())
         {
             if (oc.countConditional(arr.get(j) < pivot))
             {
