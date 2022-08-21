@@ -3,3 +3,5 @@ com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters.BubbleTimeControlled
 com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters.SelectionTimeControlledSorter
 
 com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters.InsertionTimeControlledSorter
+
+com.ptumulty.AlgoFX.AlgoModel.Sorting.TimeControlledSorters.QuickTimeControlledSorter
