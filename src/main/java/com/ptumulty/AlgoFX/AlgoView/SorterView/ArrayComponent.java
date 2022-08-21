@@ -3,8 +3,8 @@ package com.ptumulty.AlgoFX.AlgoView.SorterView;
 import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArrayModel.ArrayModel;
 import com.ptumulty.ceramic.utility.FxUtils;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -129,7 +129,7 @@ public class ArrayComponent<T extends Number> implements ArrayModel.Listener<T>
         }
     }
 
-    public Node getRenderer()
+    public Pane getRenderer()
     {
         return renderer;
     }

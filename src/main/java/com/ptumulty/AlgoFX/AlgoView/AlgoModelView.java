@@ -30,6 +30,4 @@ public interface AlgoModelView
     List<ComponentSettingGroup> getSettings();
 
     BooleanProperty busyProperty();
-
-    boolean matchesController(AlgoModelController controller);
 }

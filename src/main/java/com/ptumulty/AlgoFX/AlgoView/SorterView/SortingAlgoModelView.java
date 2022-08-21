@@ -1,9 +1,8 @@
 package com.ptumulty.AlgoFX.AlgoView.SorterView;
 
-import com.ptumulty.AlgoFX.AlgoModel.AlgoModelController;
+import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArraySorterController;
 import com.ptumulty.AlgoFX.AlgoView.AlgoModelView;
 import com.ptumulty.AlgoFX.ArrayGenerationMethod;
-import com.ptumulty.AlgoFX.AlgoModel.Sorting.ArraySorterController;
 import com.ptumulty.ceramic.components.*;
 import com.ptumulty.ceramic.models.ChoiceModel;
 import com.ptumulty.ceramic.utility.FxUtils;
