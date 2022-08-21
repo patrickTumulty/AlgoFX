@@ -170,10 +170,4 @@ public class SortingAlgoModelView implements AlgoModelView
     {
         return busyProperty;
     }
-
-    @Override
-    public boolean matchesController(AlgoModelController controller)
-    {
-        return controller instanceof ArraySorterController;
-    }
 }
